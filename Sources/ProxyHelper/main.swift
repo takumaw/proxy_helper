@@ -27,8 +27,8 @@ class Main {
         
         let parser = ArgumentParser(commandName: "proxy_helper",
                                     usage: "[-c | -s]",
-                                    overview: "Helper for constructing *_PROXY environment variable",
-                                    seeAlso: "path_helper(8)")
+                                    overview: "Helper for constructing proxy environment variable",
+                                    seeAlso: nil)
         
         let cShellEnabledOption = parser.add(option: "-c", kind: Bool.self,
                                              usage: "Generate C-shell commands on stdout.  This is the default if SHELL ends with \"csh\".")
