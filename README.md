@@ -24,10 +24,6 @@ Options:
 The `proxy_helper` utility should not be invoked directly.
 It is intended only for use by the shell profile.
 
-## SEE ALSO
-
-`path_helper(8)`
-
 ## COPYRIGHT
 
 (C)2018 WATANABE Takuma takumaw@sfo.kuramae.ne.jp.
