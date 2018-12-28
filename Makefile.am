@@ -1,4 +1,5 @@
 SWIFT = swift
+SWIFTLINT = swiftlint
 
 .PHONY: all
 all:
@@ -23,3 +24,7 @@ uninstall:
 .PHONY: check
 check:
 	$(SWIFT) test
+
+.PHONY: lint
+lint:
+	$(SWIFTLINT)
