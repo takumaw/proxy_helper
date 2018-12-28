@@ -4,12 +4,15 @@
 .Dd December 28, 2018
 .Dt proxy_helper 8
 .Os "Mac OS X"
+
 .Sh NAME
 .Nm path_helper
-.Nd helper for constructing proxy environment variable
+.Nd helper for constructing proxy environment variables
+
 .Sh SYNOPSIS
 .Nm
 .Op Fl c | Fl s
+
 .Sh DESCRIPTION
 The
 .Nm
@@ -31,12 +34,65 @@ Generate Bourne shell commands on stdout.  This is the default if
 .Ev SHELL
 does not end with "csh".
 .El
-.Sh NOTE
+.Pp
+The
+.Nm
+utility reads the proxy configuration from the System Preferences, and prints a one-liner shell script defining
+.Ev *_proxy
+environmental variables including:
+.Pp
+.Bl -bullet -offset indent -compact
+.It
+.Ev http_proxy \- Generated from the "Web Proxy Server".
+.It
+.Ev https_proxy \- Generated from the "Secure Web Proxy Server".
+.It
+.Ev ftp_proxy \- Generated from the "FTP Proxy Server".
+.It
+.Ev no_proxy \- Generated from "Bypass proxy settings".
+.El
+.Pp
+The
+.Ev no_proxy
+variable is generated based on the rules below:
+.Pp
+.Bl -bullet -offset indent -compact
+.It
+If a host matches to the pattern \fI*.some.domain.name\fP, then \fIsome.domain.name\fP is added.
+.It
+If a host matches to the pattern \fI[0-9]+.[0-9]+.[0-9]+.[0-9]+\fP (that is, IPv4 address), then the host is added as is.
+.It
+Ignored otherwise.
+.El
+.Pp
+The proxy settings are retrieved from the network interface with the highest priority amongst currently active ones.
+.Pp
+After you connected to another network environment, you may manually re-run this command to apply new proxy settings.
+
+.Sh USAGE
 The
 .Nm 
 utility should not be invoked directly.
 It is intended only for use by the shell profile.
+.Pp
+In your
+.I /etc/profile
+in BASH, or
+.I /etc/zprofile
+in ZSH, add the following lines:
+.Pp
+.Bd -literal -offset indent
+if [ -x PATH_TO_YOUR_INSTALLATION/proxy_helper ]; then
+    eval `PATH_TO_YOUR_INSTALLATION/proxy_helper -s`
+fi
+.Ed
+
 .Sh AUTHOR
 Takuma Watanabe <takumaw@sfo.kuramae.ne.jp>
+
 .Sh SEE ALSO
 .Xr path_helper 8
+
+.Sh BUGS
+Currently, Proxy Auto-Configuration (PAC) scripts are not supported.
+You have to manually specify your proxy servers in the System Preferences.
