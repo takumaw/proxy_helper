@@ -2,7 +2,7 @@ SWIFT = swift
 
 .PHONY: all
 all:
-	$(SWIFT) build -c release
+	$(SWIFT) build -c release --disable-sandbox
 
 .PHONY: clean
 clean:
