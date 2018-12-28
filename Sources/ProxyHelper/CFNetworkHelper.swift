@@ -37,7 +37,10 @@ class CFNetworkHelper {
      - returns: System Proxy Settings.
      */
     public func getProxySettingsAsDictionary() -> [String: Any] {
-        return self.getProxySettings() as! [String: Any]
+        guard let proxySettingsAsDictionary: [String: Any] = self.getProxySettings() as? [String: Any] else {
+            fatalError("Failed to load CFNetworkCopySystemProxySettings as a Swift Dictionary.")
+        }
+        return proxySettingsAsDictionary
     }
     
     /**
@@ -62,7 +65,10 @@ class CFNetworkHelper {
      Proxies.
      */
     public func getProxiesForURLAsArray(_ url: URL) -> [[String: Any]] {
-        return self.getProxiesForURL(url) as! [[String: Any]]
+        guard let proxiesForURLAsArray = self.getProxiesForURL(url) as? [[String: Any]] else {
+            fatalError("Failed to load CFNetworkCopyProxiesForURL as a Swift Array.")
+        }
+        return proxiesForURLAsArray
     }
     
 }

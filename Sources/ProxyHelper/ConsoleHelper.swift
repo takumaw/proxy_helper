@@ -8,8 +8,8 @@ import Foundation
  Shell Style enumeration.
  */
 enum ShellStyle {
-    case BourneShell
-    case CShell
+    case bourneShell
+    case cShell
 }
 
 /**
@@ -31,7 +31,7 @@ class ConsoleHelper {
        - value: Environmental variable value.
        - shellStyle: Shell style in which script is generated.
      */
-    func printEnvironmentalVariable(_ name: String, _ value: String, shellStyle: ShellStyle = .BourneShell) -> Void {
+    func printEnvironmentalVariable(_ name: String, _ value: String, shellStyle: ShellStyle = .bourneShell) -> Void {
         let variables: [String: String] = [
             name: value,
         ]
@@ -46,15 +46,15 @@ class ConsoleHelper {
        - variables: Environmental variables in [name: value] style.
        - shellStyle: Shell style in which script is generated.
      */
-    func printEnvironmentalVariables(_ variables: [String: String], shellStyle: ShellStyle = .BourneShell) -> Void {
+    func printEnvironmentalVariables(_ variables: [String: String], shellStyle: ShellStyle = .bourneShell) -> Void {
         var messages: [String] = []
         
         for (name, value) in variables {
             switch shellStyle {
-            case .BourneShell:
+            case .bourneShell:
                 messages.append("\(name)=\"\(value)\";")
                 messages.append("export \(name);")
-            case .CShell:
+            case .cShell:
                 messages.append("setenv \(name) \"\(value)\";")
             }
         }
