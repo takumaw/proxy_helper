@@ -9,11 +9,27 @@ import Foundation
  */
 class Main {
     
-    private static let console = Console()
-    private static let proxyHelper = ProxyHelper()
+    private let cfNetworkHelper: CFNetworkHelper
+    private let console: Console
+    private let consoleHelper: ConsoleHelper
+    private let proxyHelper: ProxyHelper
+    
+    /**
+     Initializer.
+     
+     Inject dependencies of the entire application.
+     */
+    init() {
+        self.cfNetworkHelper = CFNetworkHelper()
+        self.console = Console()
+        self.consoleHelper = ConsoleHelper(console: console)
+        self.proxyHelper = ProxyHelper(consoleHelper: consoleHelper, cfNetworkHelper: cfNetworkHelper)
+    }
     
     /**
      Main function.
+     
+     Invoke main logic class's entry point.
      
      - parameters:
        - arguments: Command line arguments.
@@ -21,32 +37,7 @@ class Main {
      Exit status code.
      */
     public func main(_ arguments: [String]) -> Int32 {
-        
-        var shellStyle: ShellStyle = .BourneShell
-        
-        if (arguments.count == 1) {
-            if let shellEnv: String = ProcessInfo.processInfo.environment["SHELL"] {
-                if shellEnv.hasSuffix("csh") {
-                    shellStyle = .CShell
-                } else {
-                    shellStyle = .BourneShell
-                }
-            } else {
-                shellStyle = .BourneShell
-            }
-        } else {
-            if (arguments[1] == "-c") {
-                shellStyle = .CShell
-            } else if (arguments[1] == "-s") {
-                shellStyle = .BourneShell
-            } else {
-                shellStyle = .BourneShell
-            }
-        }
-        
-        Main.proxyHelper.printProxySettings(shellStyle: shellStyle)
-        
-        return 0
+        return proxyHelper.main(arguments)
     }
     
 }

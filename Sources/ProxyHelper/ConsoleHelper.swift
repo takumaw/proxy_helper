@@ -13,11 +13,15 @@ enum ShellStyle {
 }
 
 /**
- Collections of utility function for console manipuration.
+ Collections of helper function for console manipuration.
  */
-class ConsoleUtils {
+class ConsoleHelper {
     
-    private static let console = Console()
+    private let console: Console
+    
+    init(console: Console) {
+        self.console = console
+    }
     
     /**
      Print single-line script to define an environmental variable.
@@ -56,7 +60,7 @@ class ConsoleUtils {
         }
         
         let joinedMessages = messages.joined(separator: " ")
-        _ = ConsoleUtils.console.out(joinedMessages)
+        self.console.out(joinedMessages)
     }
     
 }
