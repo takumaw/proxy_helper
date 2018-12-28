@@ -2,17 +2,14 @@
 .\" Copyright (c) 2018 Takuma Watanabe.  All rights reserved.
 .\"
 .Dd December 28, 2018
-.Dt proxy_helper 8
+.Dt path_helper 8
 .Os "Mac OS X"
-
 .Sh NAME
 .Nm path_helper
 .Nd helper for constructing proxy environment variables
-
 .Sh SYNOPSIS
 .Nm
 .Op Fl c | Fl s
-
 .Sh DESCRIPTION
 The
 .Nm
@@ -68,7 +65,6 @@ Ignored otherwise.
 The proxy settings are retrieved from the network interface with the highest priority amongst currently active ones.
 .Pp
 After you connected to another network environment, you may manually re-run this command to apply new proxy settings.
-
 .Sh USAGE
 The
 .Nm 
@@ -86,13 +82,10 @@ if [ -x PATH_TO_YOUR_INSTALLATION/proxy_helper ]; then
     eval `PATH_TO_YOUR_INSTALLATION/proxy_helper -s`
 fi
 .Ed
-
 .Sh AUTHOR
 Takuma Watanabe <takumaw@sfo.kuramae.ne.jp>
-
 .Sh SEE ALSO
 .Xr path_helper 8
-
 .Sh BUGS
 Currently, Proxy Auto-Configuration (PAC) scripts are not supported.
 You have to manually specify your proxy servers in the System Preferences.
