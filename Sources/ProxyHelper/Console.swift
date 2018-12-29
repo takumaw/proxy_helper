@@ -17,7 +17,7 @@ class Console {
        - end: Message terminator.
        - file: FileHandle to print message to.
     */
-    func print(_ message: String, end: String = "\n", file: FileHandle) -> Void {
+    func print(_ message: String, end: String = "\n", file: FileHandle) {
         guard let messageData: Data = message.data(using: String.Encoding.utf8) else {
             return
         }
@@ -36,7 +36,7 @@ class Console {
        - message: Message to print.
        - end: Message terminator.
      */
-    func out(_ message: String, end: String = "\n") -> Void {
+    func out(_ message: String, end: String = "\n") {
         self.print(message, end: end, file: FileHandle.standardOutput)
     }
     
@@ -47,7 +47,7 @@ class Console {
        - message: Message to print.
        - end: Message terminator.
      */
-    func err(_ message: String, end: String = "\n") -> Void {
+    func err(_ message: String, end: String = "\n") {
         self.print(message, end: end, file: FileHandle.standardError)
     }
     

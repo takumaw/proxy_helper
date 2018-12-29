@@ -31,7 +31,7 @@ class ConsoleHelper {
        - value: Environmental variable value.
        - shellStyle: Shell style in which script is generated.
      */
-    func printEnvironmentalVariable(_ name: String, _ value: String, shellStyle: ShellStyle = .bourneShell) -> Void {
+    func printEnvironmentalVariable(_ name: String, _ value: String, shellStyle: ShellStyle = .bourneShell) {
         let variables: [String: String] = [
             name: value,
         ]
@@ -46,7 +46,7 @@ class ConsoleHelper {
        - variables: Environmental variables in [name: value] style.
        - shellStyle: Shell style in which script is generated.
      */
-    func printEnvironmentalVariables(_ variables: [String: String], shellStyle: ShellStyle = .bourneShell) -> Void {
+    func printEnvironmentalVariables(_ variables: [String: String], shellStyle: ShellStyle = .bourneShell) {
         var messages: [String] = []
         
         for (name, value) in variables {

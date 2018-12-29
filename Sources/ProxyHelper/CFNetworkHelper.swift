@@ -10,7 +10,7 @@ import CFNetwork
  */
 class CFNetworkHelper {
     
-    private var proxySettings: CFDictionary? = nil
+    private var proxySettings: CFDictionary?
     
     /**
      Get System Proxy Settings.

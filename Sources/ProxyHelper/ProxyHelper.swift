@@ -185,7 +185,7 @@ class ProxyHelper {
      - parameters:
        - shellStyle: Shell style in which script is generated.
      */
-    public func printProxySettings(shellStyle: ShellStyle) -> Void {
+    public func printProxySettings(shellStyle: ShellStyle) {
         var proxyVariables: [String: String] = [:]
         
         if let httpProxyURL: String = self.getHTTPProxyURL() {
@@ -216,7 +216,7 @@ class ProxyHelper {
        - url: URL using which to determine proxy address.
        - shellStyle: Shell style in which script is generated.
      */
-    public func printProxyForURL(_ url: URL, shellStyle: ShellStyle) -> Void {
+    public func printProxyForURL(_ url: URL, shellStyle: ShellStyle) {
         guard let urlScheme: String = url.scheme else {
             return
         }
@@ -241,7 +241,7 @@ class ProxyHelper {
         
         var shellStyle: ShellStyle?
         
-        if (arguments.count >= 2) {
+        if arguments.count >= 2 {
             switch arguments[1] {
             case "-c":
                 shellStyle = .cShell
