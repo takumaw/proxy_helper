@@ -1,4 +1,8 @@
 # HISTORY
+## 0.0.4
+
+  * Refactored application structure to split controller/logic.
+
 ## 0.0.3
 
   * Added HISTORY.md.
