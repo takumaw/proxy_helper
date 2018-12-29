@@ -5,7 +5,7 @@
 import Foundation
 
 /**
- Shell Style enumeration.
+ Shell style enumeration.
  */
 enum ShellStyle {
     case bourneShell
@@ -17,10 +17,16 @@ enum ShellStyle {
  */
 class ConsoleHelper {
     
-    private let console: Console
+    // Dependencies.
+    private let consoleWrapper: ConsoleWrapper
     
-    init(console: Console) {
-        self.console = console
+    /**
+     Initializer.
+     
+     Inject dependencies.
+     */
+    init(consoleWrapper: ConsoleWrapper) {
+        self.consoleWrapper = consoleWrapper
     }
     
     /**
@@ -59,8 +65,8 @@ class ConsoleHelper {
             }
         }
         
-        let joinedMessages = messages.joined(separator: " ")
-        self.console.out(joinedMessages)
+        let joinedMessages: String = messages.joined(separator: " ")
+        self.consoleWrapper.out(joinedMessages)
     }
     
 }

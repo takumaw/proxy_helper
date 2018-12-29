@@ -5,14 +5,16 @@
 import Foundation
 
 /**
- ProxyHelper entry point class.
+ ProxyHelper application entry point class.
  */
 class Main {
     
+    // Dependencies.
     private let cfNetworkHelper: CFNetworkHelper
-    private let console: Console
     private let consoleHelper: ConsoleHelper
+    private let consoleWrapper: ConsoleWrapper
     private let proxyHelper: ProxyHelper
+    private let proxyHelperCore: ProxyHelperCore
     
     /**
      Initializer.
@@ -21,15 +23,16 @@ class Main {
      */
     init() {
         self.cfNetworkHelper = CFNetworkHelper()
-        self.console = Console()
-        self.consoleHelper = ConsoleHelper(console: console)
-        self.proxyHelper = ProxyHelper(consoleHelper: consoleHelper, cfNetworkHelper: cfNetworkHelper)
+        self.consoleWrapper = ConsoleWrapper()
+        self.consoleHelper = ConsoleHelper(consoleWrapper: consoleWrapper)
+        self.proxyHelperCore = ProxyHelperCore(cfNetworkHelper: cfNetworkHelper)
+        self.proxyHelper = ProxyHelper(consoleHelper: consoleHelper, proxyHelperCore: proxyHelperCore)
     }
     
     /**
      Main function.
      
-     Invoke main logic class's entry point.
+     Invoke controller class's main entry point.
      
      - parameters:
        - arguments: Command line arguments.

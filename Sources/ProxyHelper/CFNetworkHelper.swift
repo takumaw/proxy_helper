@@ -10,6 +10,14 @@ import CFNetwork
  */
 class CFNetworkHelper {
     
+    /**
+     Initializer.
+     
+     Inject dependencies.
+     */
+    init() {
+    }
+    
     private var proxySettings: CFDictionary?
     
     /**

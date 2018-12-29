@@ -7,7 +7,15 @@ import Foundation
 /**
  Simple wrapper class for console manipulation.
  */
-class Console {
+class ConsoleWrapper {
+    
+    /**
+     Initializer.
+     
+     Inject dependencies.
+     */
+    init() {
+    }
     
     /**
      Print message to given filehandle.
