@@ -11,17 +11,13 @@ all:
 clean:
 	$(RM) -r .build
 
-# Install only (without building artifacts)
-.PHONY: install-only
-install-only:
+# Install articacts
+.PHONY: install
+install: all
 	$(MKDIR_P) "$(libexecdir)"
 	$(MKDIR_P) "$(mandir)/man8"
 	$(INSTALL_PROGRAM) ".build/release/proxy_helper" "$(libexecdir)/proxy_helper"
 	$(INSTALL_DATA) "ManPage/proxy_helper.8" "$(mandir)/man8/proxy_helper.8"
-
-# Install articacts
-.PHONY: install
-install: all install-only
 
 # Uninstall artifacts
 .PHONY: uninstall
