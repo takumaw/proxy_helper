@@ -20,7 +20,7 @@ Options:
     -s      Generate Bourne shell commands on stdout.  This is the default if SHELL does not end with "csh".
 
 The `proxy_helper` utility reads the proxy configuration from the System Preferences,
-and prints a one-liner shell script defining `*_proxy` environment variables including:
+and prints a one-liner shell script defining `*_proxy` environment variables.
 
   * `http_proxy` - Generated from the "Web Proxy Server".
   * `https_proxy` - Generated from the "Secure Web Proxy Server". 
