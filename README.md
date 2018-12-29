@@ -1,5 +1,64 @@
 # proxy_helper
 
+(C)2018 WATANABE Takuma takumaw@sfo.kuramae.ne.jp.
+
+Licence: MIT.
+
+## What is this
+
+The `proxy_helper` utility reads the proxy settings from System Preferences and constructs
+the `http_proxy`, `https_proxy`, `ftp_proxy` and `no_proxy` environment variables respectively.
+
+    $ proxy_helper -s
+    http_proxy="http://YOUR_HTTP_PROXY_SERVER:PORT"; export http_proxy; https_proxy="http://YOUR_HTTPS_PROXY_SERVER:PORT"; export https_proxy; ftp_proxy="http://YOUR_FTP_PROXY_SERVER:PORT"; export ftp_proxy; no_proxy="NO_PROXIES"; export no_proxy;
+
+## How to install
+
+Homebrew tap is available at https://github.com/takumaw/homebrew-proxy_helper.
+
+    brew tap takumaw/proxy_helper
+    brew install proxy_helper
+
+Or, you may build a binary from the source. See [INSTALL.md](/INSTALL.md).
+
+## How it works
+
+In your `/etc/profile` for BASH, or `/etc/zprofile` for ZSH, add the following code snippet: 
+
+    if [ -x /usr/local/opt/proxy_helper/libexec/proxy_helper ]; then
+        eval `/usr/local/opt/proxy_helper/libexec/proxy_helper -s`
+    fi
+
+Change the path to the binary when you install it to another directory (e.g. built from the source.)
+
+You may innstead put the snippet on `~/.bash_profile`, `~/.zshenv` or `~/.zprofile`.
+
+For CSH or TCSH users, put the following code to e.g. `/etc/csh.login`:
+
+    if ( -x /usr/local/opt/proxy_helper/libexec/proxy_helper ) then
+        eval `/usr/local/opt/proxy_helper/libexec/proxy_helper -c`
+    endif
+
+That's all set! All your newly invoked shells now have proxy environment variables set.
+
+Re-open your terminal, and you see:
+
+    $ export
+       :
+    ftp_proxy=http://YOUR_FTP_PROXY_SERVER:PORT
+    http_proxy=http://YOUR_HTTP_PROXY_SERVER:PORT
+    https_proxy=http://YOUR_HTTPS_PROXY_SERVER:PORT
+    no_proxy=NO_PROXIES
+       :
+    
+    $ curl -O ...
+    # Commands works behind your proxy!
+
+
+----
+
+# Man Page of `proxy_helper`
+
 ## NAME
 
 `proxy_helper` -- helper for constructing proxy environment variables
@@ -42,17 +101,19 @@ After you connected to another network environment, you may manually re-run this
 The `proxy_helper` utility should not be invoked directly.
 It is intended only for use by the shell profile.
 
-In your `/etc/profile` in BASH, or `/etc/zprofile` in ZSH, add the following lines:
+In your `/etc/profile` for BASH, or `/etc/zprofile` for ZSH, add the following code snippet:
 
     if [ -x PATH_TO_YOUR_INSTALLATION/proxy_helper ]; then
         eval `PATH_TO_YOUR_INSTALLATION/proxy_helper -s`
     fi
 
-## COPYRIGHT
+## AUTHOR
 
-(C)2018 WATANABE Takuma takumaw@sfo.kuramae.ne.jp.
+Takuma Watannabe <takumaw@sfo.kuramae.ne.jp>
 
-Licence: MIT.
+## SEE ALSO
+
+  * `path_helper(8)`
 
 ## BUGS
 
