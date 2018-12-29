@@ -30,29 +30,29 @@ class ConsoleHelper {
     }
     
     /**
-     Print single-line script to define an environmental variable.
+     Print single-line script to define an environment variable.
      
      - parameters:
-       - name: Environmental variable name.
-       - value: Environmental variable value.
+       - name: Environment variable name.
+       - value: Environment variable value.
        - shellStyle: Shell style in which script is generated.
      */
-    func printEnvironmentalVariable(_ name: String, _ value: String, shellStyle: ShellStyle = .bourneShell) {
+    func printEnvironmentVariable(_ name: String, _ value: String, shellStyle: ShellStyle = .bourneShell) {
         let variables: [String: String] = [
             name: value,
         ]
         
-        self.printEnvironmentalVariables(variables, shellStyle: shellStyle)
+        self.printEnvironmentVariables(variables, shellStyle: shellStyle)
     }
     
     /**
-     Print single-line script to define multiple environmental variables.
+     Print single-line script to define multiple environment variables.
      
      - parameters:
-       - variables: Environmental variables in [name: value] style.
+       - variables: Environment variables in [name: value] style.
        - shellStyle: Shell style in which script is generated.
      */
-    func printEnvironmentalVariables(_ variables: [String: String], shellStyle: ShellStyle = .bourneShell) {
+    func printEnvironmentVariables(_ variables: [String: String], shellStyle: ShellStyle = .bourneShell) {
         var messages: [String] = []
         
         for (name, value) in variables {

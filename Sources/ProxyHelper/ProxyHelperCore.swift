@@ -214,7 +214,7 @@ class ProxyHelperCore {
     }
     
     /**
-     Get proxy environmental variables determined with given URL.
+     Get proxy environment variables determined with given URL.
      
      - parameters:
        - url: URL using which to determine proxy address.

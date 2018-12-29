@@ -73,7 +73,7 @@ class ProxyHelper {
     }
     
     /**
-     Print proxy environmental variables.
+     Print proxy environment variables.
      
      - parameters:
      - shellStyle: Shell style in which script is generated.
@@ -82,12 +82,12 @@ class ProxyHelper {
         let proxyEnnvironmentVariables: [String: String] = self.proxyHelperCore.getAllProxyEnvironmentVariables()
         
         if proxyEnnvironmentVariables.keys.count > 0 {
-            self.consoleHelper.printEnvironmentalVariables(proxyEnnvironmentVariables, shellStyle: shellStyle)
+            self.consoleHelper.printEnvironmentVariables(proxyEnnvironmentVariables, shellStyle: shellStyle)
         }
     }
     
     /**
-     Print proxy environmental variable determined with given URL.
+     Print proxy environment variable determined with given URL.
      
      - parameters:
      - url: URL using which to determine proxy address.
@@ -97,7 +97,7 @@ class ProxyHelper {
         let proxyEnnvironmentVariables: [String: String] = self.proxyHelperCore.getProxyEnvironmentVariableForURL(url)
         
         if proxyEnnvironmentVariables.keys.count > 0 {
-            self.consoleHelper.printEnvironmentalVariables(proxyEnnvironmentVariables, shellStyle: shellStyle)
+            self.consoleHelper.printEnvironmentVariables(proxyEnnvironmentVariables, shellStyle: shellStyle)
         }
     }
     
