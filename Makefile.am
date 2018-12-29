@@ -38,3 +38,13 @@ check:
 .PHONY: lint
 lint:
 	$(SWIFTLINT) $(SWIFTLINTFLAGS)
+
+# Generate Xcode Project
+.PHONY: generate-xcodeproj
+generate-xcodeproj:
+	$(SWIFT) package generate-xcodeproj
+
+# Clean Xcode Project
+.PHONY: clean-xcodeproj
+clean-xcodeproj:
+	$(RM) -r ProxyHelper.xcodeproj
