@@ -32,7 +32,7 @@ class Main {
         self.proxyHelper = ProxyHelper(consoleHelper: consoleHelper, proxyHelperCore: proxyHelperCore)
     }
     
-    // MARK:- Instance methods
+    // MARK:- Instance Methods
     
     /**
      Main function.

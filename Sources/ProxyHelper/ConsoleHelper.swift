@@ -4,7 +4,7 @@
 
 import Foundation
 
-// MARK:- Constants and variables
+// MARK:- Constants and Variables
 
 /**
  Shell style enumeration.
@@ -36,7 +36,7 @@ class ConsoleHelper {
         self.consoleWrapper = consoleWrapper
     }
     
-    // MARK: Instance methods
+    // MARK: Instance Methods
     
     /**
      Print single-line script to define an environment variable.

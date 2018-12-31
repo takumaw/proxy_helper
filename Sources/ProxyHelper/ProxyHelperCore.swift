@@ -25,7 +25,7 @@ class ProxyHelperCore {
         self.cfNetworkHelper = cfNetworkHelper
     }
     
-    // MARK:- Instance methods
+    // MARK:- Instance Methods
     
     /**
      Get HTTP proxy URL.

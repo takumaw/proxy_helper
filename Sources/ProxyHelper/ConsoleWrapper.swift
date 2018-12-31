@@ -19,7 +19,7 @@ class ConsoleWrapper {
     init() {
     }
     
-    // MARK:- Instance methods
+    // MARK:- Instance Methods
     
     /**
      Print message to given filehandle.

@@ -27,7 +27,7 @@ class ProxyHelper {
         self.proxyHelperCore = proxyHelperCore
     }
     
-    // MARK:- Instance methods
+    // MARK:- Instance Methods
     
     // MARK: Entry point
     
