@@ -9,6 +9,8 @@ import Foundation
  */
 class ConsoleWrapper {
     
+    // MARK:- Initializer
+    
     /**
      Initializer.
      
@@ -16,6 +18,8 @@ class ConsoleWrapper {
      */
     init() {
     }
+    
+    // MARK:- Instance methods
     
     /**
      Print message to given filehandle.

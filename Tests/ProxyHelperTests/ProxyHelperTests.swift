@@ -33,6 +33,7 @@ final class ProxyHelperTests: XCTestCase {
         
         // TODO: Write it later.
         //XCTAssertEqual(output, "...")
+        print(output as Any)
         
         XCTAssertEqual(process.terminationStatus, 0)
     }

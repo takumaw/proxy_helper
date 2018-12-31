@@ -10,8 +10,11 @@ import CFNetwork
  */
 class ProxyHelperCore {
     
-    // Dependencies.
+    // MARK:- Dependencies
+    
     private let cfNetworkHelper: CFNetworkHelper
+    
+    // MARK:- Initializer
     
     /**
      Initializer.
@@ -21,6 +24,8 @@ class ProxyHelperCore {
     init(cfNetworkHelper: CFNetworkHelper) {
         self.cfNetworkHelper = cfNetworkHelper
     }
+    
+    // MARK:- Instance methods
     
     /**
      Get HTTP proxy URL.

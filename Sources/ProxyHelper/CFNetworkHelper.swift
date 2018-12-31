@@ -10,6 +10,12 @@ import CFNetwork
  */
 class CFNetworkHelper {
     
+    // MARK:- Instance variables
+    
+    private var proxySettings: CFDictionary?
+    
+    // MARK:- Initializer
+    
     /**
      Initializer.
      
@@ -18,7 +24,7 @@ class CFNetworkHelper {
     init() {
     }
     
-    private var proxySettings: CFDictionary?
+    // MARK:- Instance methods
     
     /**
      Get System Proxy Settings.
