@@ -12,6 +12,10 @@ the `http_proxy`, `https_proxy`, `ftp_proxy` and `no_proxy` environment variable
     $ proxy_helper -s
     http_proxy="http://YOUR_HTTP_PROXY_SERVER:PORT"; export http_proxy; https_proxy="http://YOUR_HTTPS_PROXY_SERVER:PORT"; export https_proxy; ftp_proxy="http://YOUR_FTP_PROXY_SERVER:PORT"; export ftp_proxy; no_proxy="NO_PROXIES"; export no_proxy;
 
+## Requirements
+
+* macOS 10.13 (High Sierra) or later.
+
 ## How to install
 
 Homebrew tap is available at https://github.com/takumaw/homebrew-proxy_helper.

@@ -1,0 +1,76 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and Release
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Tests
+        run: swift test --disable-sandbox
+
+      - name: Build Release Binary
+        run: swift build -c release --disable-sandbox --arch arm64 --arch x86_64
+
+      - name: Prepare Release Artifacts
+        id: prepare
+        run: |
+          TAG_NAME="${{ github.ref_name }}"
+          VERSION="${TAG_NAME#v}"
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          
+          # Create archive directory structure
+          ARCHIVE_DIR=".build/archive"
+          mkdir -p "${ARCHIVE_DIR}/bin"
+          mkdir -p "${ARCHIVE_DIR}/share/man/man8"
+          
+          # Copy files
+          cp ".build/apple/Products/Release/proxy_helper" "${ARCHIVE_DIR}/bin/"
+          cp "ManPage/proxy_helper.8" "${ARCHIVE_DIR}/share/man/man8/"
+          
+          # Archive with prefix structure
+          ARCHIVE_NAME="proxy_helper-${TAG_NAME}-macOS.tar.gz"
+          tar -czf "${ARCHIVE_NAME}" -C "${ARCHIVE_DIR}" "bin" "share"
+          echo "archive=${ARCHIVE_NAME}" >> $GITHUB_OUTPUT
+
+      - name: Extract Release Notes from HISTORY.md
+        id: notes
+        run: |
+          TAG_NAME="${{ github.ref_name }}"
+          VERSION="${TAG_NAME#v}"
+          
+          # Extract notes for this version from HISTORY.md using awk
+          awk -v ver="${VERSION}" '
+            /^## / {
+              if ($2 == ver) {
+                p = 1; next
+              } else if (p) {
+                exit
+              }
+            }
+            p { print }
+          ' HISTORY.md > release_notes.txt
+          
+          # Show extracted notes for verification in logs
+          cat release_notes.txt
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: release_notes.txt
+          files: ${{ steps.prepare.outputs.archive }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
