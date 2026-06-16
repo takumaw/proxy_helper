@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Takuma Watanabe.
+ * Copyright (c) 2018-2026 Takuma Watanabe.
  */
 
 import Foundation
@@ -244,4 +244,89 @@ class ProxyHelperCore {
         return proxyEnnvironmentVariables
     }
     
+    /**
+     Get system PAC (Proxy Auto-Configuration) URL if enabled.
+     
+     - returns:
+       PAC URL.
+     */
+    public func getSystemPACURL() -> URL? {
+        let proxySettingsDictionary = self.cfNetworkHelper.getProxySettingsAsDictionary()
+        
+        guard let enablePAC = proxySettingsDictionary[kCFNetworkProxiesProxyAutoConfigEnable as String] as? Int, enablePAC == 1 else {
+            return nil
+        }
+        guard let pacURLString = proxySettingsDictionary[kCFNetworkProxiesProxyAutoConfigURLString as String] as? String else {
+            return nil
+        }
+        return URL(string: pacURLString)
+    }
+    
+    /**
+     Get proxy environment variables by evaluating PAC for the specified URL.
+     
+     - parameters:
+       - url: Target URL to evaluate against the PAC.
+     - returns:
+       Proxy environment variables.
+     */
+    public func getPACProxyEnvironmentVariables(targetURL: URL) -> [String: String] {
+        var proxyEnvironmentVariables: [String: String] = [:]
+        
+        guard let pacURL = self.getSystemPACURL() else {
+            return proxyEnvironmentVariables
+        }
+        
+        guard let proxies = self.cfNetworkHelper.executePAC(pacURL: pacURL, targetURL: targetURL) else {
+            return proxyEnvironmentVariables
+        }
+        
+        if proxies.isEmpty {
+            return proxyEnvironmentVariables
+        }
+        
+        let proxy = proxies[0]
+        guard let proxyTypeAny = proxy[kCFProxyTypeKey as String] else {
+            return proxyEnvironmentVariables
+        }
+        // swiftlint:disable force_cast
+        let proxyType = proxyTypeAny as! CFString
+        
+        if proxyType == kCFProxyTypeNone {
+            return proxyEnvironmentVariables
+        }
+        
+        guard let proxyHost = proxy[kCFProxyHostNameKey as String] as? String,
+              let proxyPort = proxy[kCFProxyPortNumberKey as String] as? Int else {
+            return proxyEnvironmentVariables
+        }
+        
+        var proxyScheme: String
+        switch proxyType {
+        case kCFProxyTypeHTTP:
+            proxyScheme = "http"
+        case kCFProxyTypeHTTPS:
+            proxyScheme = "https"
+        case kCFProxyTypeFTP:
+            proxyScheme = "ftp"
+        case kCFProxyTypeSOCKS:
+            proxyScheme = "socks"
+        default:
+            return proxyEnvironmentVariables
+        }
+
+        
+        let proxyURL = "\(proxyScheme)://\(proxyHost):\(proxyPort)"
+        
+        if proxyType == kCFProxyTypeHTTP || proxyType == kCFProxyTypeHTTPS || proxyType == kCFProxyTypeSOCKS {
+            proxyEnvironmentVariables["http_proxy"] = proxyURL
+            proxyEnvironmentVariables["https_proxy"] = proxyURL
+        } else if proxyType == kCFProxyTypeFTP {
+            proxyEnvironmentVariables["ftp_proxy"] = proxyURL
+        }
+        
+        return proxyEnvironmentVariables
+    }
+    
 }
+

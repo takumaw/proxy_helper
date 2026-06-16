@@ -1,15 +1,17 @@
 .\"
 .\" Copyright (c) 2018 Takuma Watanabe.  All rights reserved.
 .\"
-.Dd December 28, 2018
-.Dt path_helper 8
+.Dd June 16, 2026
+.Dt proxy_helper 8
 .Os "Mac OS X"
 .Sh NAME
-.Nm path_helper
+.Nm proxy_helper
 .Nd helper for constructing proxy environment variables
 .Sh SYNOPSIS
 .Nm
 .Op Fl c | Fl s
+.Op Fl p | Fl -pac
+.Op Fl u | Fl -url Ar url
 .Sh DESCRIPTION
 The
 .Nm
@@ -30,6 +32,10 @@ ends with "csh".
 Generate Bourne shell commands on stdout.  This is the default if
 .Ev SHELL
 does not end with "csh".
+.It Fl p | Fl -pac
+Enable Proxy Auto-Configuration (PAC) script evaluation.
+.It Fl u | Fl -url Ar url
+Target URL used for PAC script evaluation. If not specified, https://www.google.com is used.
 .El
 .Pp
 The
@@ -57,7 +63,7 @@ variable is generated based on the rules below:
 .It
 If a host matches to the pattern \fI*.some.domain.name\fP, then \fIsome.domain.name\fP is added.
 .It
-If a host matches to the pattern \fI[0-9]+.[0-9]+.[0-9]+.[0-9]+\fP (that is, IPv4 address), then the host is added as is.
+If a host matches to the pattern \fI[0-9]+.[0-9]+.[0-9]+.[0-9]\fP (that is, IPv4 address), then the host is added as is.
 .It
 Ignored otherwise.
 .El
@@ -69,7 +75,7 @@ After you connected to another network environment, you may manually re-run this
 The
 .Nm 
 utility should not be invoked directly.
-It is intended only for use by the shell profile.
+.It is intended only for use by the shell profile.
 .Pp
 In your
 .I /etc/profile
@@ -86,6 +92,3 @@ fi
 Takuma Watanabe <takumaw@sfo.kuramae.ne.jp>
 .Sh SEE ALSO
 .Xr path_helper 8
-.Sh BUGS
-Currently, Proxy Auto-Configuration (PAC) scripts are not supported.
-You have to manually specify your proxy servers in the System Preferences.

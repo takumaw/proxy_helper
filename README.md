@@ -65,7 +65,7 @@ Re-open your terminal, and you see:
 
 ## SYNOPSIS
 
-    proxy_helper [-c | -s]
+    proxy_helper [-c | -s] [-p] [-u <url>]
 
 ## DESCRIPTION
 
@@ -77,6 +77,10 @@ Options:
     -c      Generate C-shell commands on stdout.  This is the default if SHELL ends with "csh".
 
     -s      Generate Bourne shell commands on stdout.  This is the default if SHELL does not end with "csh".
+
+    -p      Enable Proxy Auto-Configuration (PAC) script evaluation.
+
+    -u      Target URL used for PAC script evaluation. If not specified, "https://www.google.com" is used as a default.
 
 The `proxy_helper` utility reads the proxy configuration from the System Preferences,
 and prints a one-liner shell script defining `*_proxy` environment variables.
@@ -114,8 +118,3 @@ Takuma Watannabe <takumaw@sfo.kuramae.ne.jp>
 ## SEE ALSO
 
   * `path_helper(8)`
-
-## BUGS
-
-Currently, Proxy Auto-Configuration (PAC) scripts are not supported.
-You have to manually specify your proxy servers in the System Preferences.

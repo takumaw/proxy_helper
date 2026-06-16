@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Takuma Watanabe.
+ * Copyright (c) 2018-2026 Takuma Watanabe.
  */
 
 import Foundation
@@ -40,20 +40,31 @@ class ProxyHelper {
      Exit status code.
      */
     public func main(_ arguments: [String]) -> Int32 {
-        
         var shellStyle: ShellStyle?
+        var enablePAC = false
+        var targetURLString: String?
         
-        // Parse options when specified.
-        // Ignore unknown options.
-        if arguments.count >= 2 {
-            switch arguments[1] {
+        var i = 1
+        while i < arguments.count {
+            let arg = arguments[i]
+            switch arg {
             case "-c":
                 shellStyle = .cShell
             case "-s":
                 shellStyle = .bourneShell
+            case "-p", "--pac":
+                enablePAC = true
+            case "-u", "--url":
+                if i + 1 < arguments.count {
+                    targetURLString = arguments[i + 1]
+                    i += 1
+                } else {
+                    return 1
+                }
             default:
                 break
             }
+            i += 1
         }
         
         // If unable to determine shell style by option,
@@ -73,8 +84,20 @@ class ProxyHelper {
             shellStyle = .bourneShell
         }
         
-        // Invoke specified command.
-        self.printProxySettings(shellStyle: shellStyle!)
+        if enablePAC {
+            let defaultURL = URL(string: "https://www.google.com")!
+            var targetURL = defaultURL
+            if let targetURLString = targetURLString {
+                if let url = URL(string: targetURLString) {
+                    targetURL = url
+                } else {
+                    return 1
+                }
+            }
+            self.printPACProxySettings(targetURL: targetURL, shellStyle: shellStyle!)
+        } else {
+            self.printProxySettings(shellStyle: shellStyle!)
+        }
         
         return 0
     }
@@ -96,6 +119,21 @@ class ProxyHelper {
     }
     
     /**
+     Print proxy environment variables determined by PAC.
+     
+     - parameters:
+       - targetURL: Target URL to resolve proxy for.
+       - shellStyle: Shell style in which script is generated.
+     */
+    public func printPACProxySettings(targetURL: URL, shellStyle: ShellStyle) {
+        let proxyEnvironmentVariables = self.proxyHelperCore.getPACProxyEnvironmentVariables(targetURL: targetURL)
+        
+        if proxyEnvironmentVariables.keys.count > 0 {
+            self.consoleHelper.printEnvironmentVariables(proxyEnvironmentVariables, shellStyle: shellStyle)
+        }
+    }
+    
+    /**
      Print proxy environment variable determined with given URL.
      
      - parameters:
@@ -111,3 +149,4 @@ class ProxyHelper {
     }
     
 }
+
