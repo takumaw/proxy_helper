@@ -21,6 +21,7 @@ the `http_proxy`, `https_proxy`, `ftp_proxy` and `no_proxy` environment variable
 Homebrew tap is available at https://github.com/takumaw/homebrew-proxy_helper.
 
     brew tap takumaw/proxy_helper
+    brew trust takumaw/proxy_helper
     brew install proxy_helper
 
 Or, you may build a binary from the source. See [INSTALL.md](/INSTALL.md).
