@@ -1,7 +1,5 @@
 disabled_rules:
-  - line_length
   - todo
-  - identifier_name
   - cyclomatic_complexity
   - function_body_length
 
@@ -11,3 +9,15 @@ excluded:
 
 trailing_comma:
   mandatory_comma: true
+
+line_length:
+  warning: 160
+  error: 240
+
+identifier_name:
+  min_length: 3
+  max_length: 40
+  excluded:
+    - i
+    - j
+    - k

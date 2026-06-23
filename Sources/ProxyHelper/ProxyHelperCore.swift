@@ -112,7 +112,8 @@ class ProxyHelperCore {
             return nil
         }
 
-        guard let proxiesExceptionsList: [String] = self.cfNetworkHelper.getProxySettingsAsDictionary()[kCFNetworkProxiesExceptionsList as String] as? [String] else {
+        let proxySettings = self.cfNetworkHelper.getProxySettingsAsDictionary()
+        guard let proxiesExceptionsList = proxySettings[kCFNetworkProxiesExceptionsList as String] as? [String] else {
             return nil
         }
 
