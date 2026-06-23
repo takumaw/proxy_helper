@@ -18,6 +18,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: SwiftLint
+        run: swiftlint lint --strict
+
       - name: Run Tests
         run: swift test --disable-sandbox
 
