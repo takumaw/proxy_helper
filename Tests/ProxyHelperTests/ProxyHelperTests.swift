@@ -145,4 +145,3 @@ final class ProxyHelperTests: XCTestCase {
       #endif
     }
 }
-

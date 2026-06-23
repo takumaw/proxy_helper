@@ -10,11 +10,11 @@ import CFNetwork
  */
 class ProxyHelperCore {
     
-    // MARK:- Dependencies
+    // MARK: - Dependencies
     
     private let cfNetworkHelper: CFNetworkHelper
     
-    // MARK:- Initializer
+    // MARK: - Initializer
     
     /**
      Initializer.
@@ -25,7 +25,7 @@ class ProxyHelperCore {
         self.cfNetworkHelper = cfNetworkHelper
     }
     
-    // MARK:- Instance Methods
+    // MARK: - Instance Methods
     
     /**
      Get HTTP proxy URL.
@@ -36,7 +36,7 @@ class ProxyHelperCore {
     public func getHTTPProxyURL() -> String? {
         let proxySettingsDictionary: [String: Any] = self.cfNetworkHelper.getProxySettingsAsDictionary()
         
-        guard let _: Int = proxySettingsDictionary[kCFNetworkProxiesHTTPEnable as String] as? Int else {
+        guard proxySettingsDictionary[kCFNetworkProxiesHTTPEnable as String] != nil else {
             return nil
         }
         guard let httpProxy: String = proxySettingsDictionary[kCFNetworkProxiesHTTPProxy as String] as? String else {
@@ -59,7 +59,7 @@ class ProxyHelperCore {
     public func getHTTPSProxyURL() -> String? {
         let proxySettingsDictionary: [String: Any] = self.cfNetworkHelper.getProxySettingsAsDictionary()
         
-        guard let _: Int = proxySettingsDictionary[kCFNetworkProxiesHTTPSEnable as String] as? Int else {
+        guard proxySettingsDictionary[kCFNetworkProxiesHTTPSEnable as String] != nil else {
             return nil
         }
         guard let httpsProxy: String = proxySettingsDictionary[kCFNetworkProxiesHTTPSProxy as String] as? String else {
@@ -82,7 +82,7 @@ class ProxyHelperCore {
     public func getFTPProxyURL() -> String? {
         let proxySettingsDictionary: [String: Any] = self.cfNetworkHelper.getProxySettingsAsDictionary()
         
-        guard let _: Int = proxySettingsDictionary[kCFNetworkProxiesFTPEnable as String] as? Int else {
+        guard proxySettingsDictionary[kCFNetworkProxiesFTPEnable as String] != nil else {
             return nil
         }
         guard let ftpProxy: String = proxySettingsDictionary[kCFNetworkProxiesFTPProxy as String] as? String else {
@@ -166,15 +166,15 @@ class ProxyHelperCore {
             guard let proxyPortNumber: Int = proxy[kCFProxyPortNumberKey as String] as? Int else {
                 return nil
             }
-            // swiftlint:disable force_cast
-            let proxyType: CFString = proxy[kCFProxyTypeKey as String] as! CFString
+            // swiftlint:disable:next force_cast
+            let proxyType = proxy[kCFProxyTypeKey as String] as! CFString
             
             var proxyScheme: String
             
             switch proxyType {
             case kCFProxyTypeHTTP:
                 proxyScheme = "http"
-            case kCFProxyTypeHTTPS :
+            case kCFProxyTypeHTTPS:
                 proxyScheme = "https"
             case kCFProxyTypeFTP:
                 proxyScheme = "ftp"
@@ -289,7 +289,7 @@ class ProxyHelperCore {
         guard let proxyTypeAny = proxy[kCFProxyTypeKey as String] else {
             return proxyEnvironmentVariables
         }
-        // swiftlint:disable force_cast
+        // swiftlint:disable:next force_cast
         let proxyType = proxyTypeAny as! CFString
         
         if proxyType == kCFProxyTypeNone {
@@ -314,7 +314,6 @@ class ProxyHelperCore {
         default:
             return proxyEnvironmentVariables
         }
-
         
         let proxyURL = "\(proxyScheme)://\(proxyHost):\(proxyPort)"
         
@@ -329,4 +328,3 @@ class ProxyHelperCore {
     }
     
 }
-

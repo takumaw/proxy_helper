@@ -9,12 +9,12 @@ import Foundation
  */
 class ProxyHelper {
     
-    // MARK:- Dependencies
+    // MARK: - Dependencies
     
     private let consoleHelper: ConsoleHelper
     private let proxyHelperCore: ProxyHelperCore
     
-    // MARK:- Initializer
+    // MARK: - Initializer
     
     /**
      Initializer.
@@ -27,9 +27,9 @@ class ProxyHelper {
         self.proxyHelperCore = proxyHelperCore
     }
     
-    // MARK:- Instance Methods
+    // MARK: - Instance Methods
     
-    // MARK: Entry point
+    // MARK: - Entry point
     
     /**
      Main entry point.
@@ -102,7 +102,7 @@ class ProxyHelper {
         return 0
     }
     
-    // MARK: Commands
+    // MARK: - Commands
     
     /**
      Print proxy environment variables.
@@ -149,4 +149,3 @@ class ProxyHelper {
     }
     
 }
-

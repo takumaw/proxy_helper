@@ -9,7 +9,7 @@ import Foundation
  */
 class Main {
     
-    // MARK:- Dependencies
+    // MARK: - Dependencies
     
     private let cfNetworkHelper: CFNetworkHelper
     private let consoleHelper: ConsoleHelper
@@ -17,7 +17,7 @@ class Main {
     private let proxyHelper: ProxyHelper
     private let proxyHelperCore: ProxyHelperCore
     
-    // MARK:- Initializer
+    // MARK: - Initializer
     
     /**
      Initializer.
@@ -32,7 +32,7 @@ class Main {
         self.proxyHelper = ProxyHelper(consoleHelper: consoleHelper, proxyHelperCore: proxyHelperCore)
     }
     
-    // MARK:- Instance Methods
+    // MARK: - Instance Methods
     
     /**
      Main function.

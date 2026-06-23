@@ -4,7 +4,7 @@
 
 import Foundation
 
-// MARK:- Constants and Variables
+// MARK: - Constants and Variables
 
 /**
  Shell style enumeration.
@@ -14,18 +14,18 @@ enum ShellStyle {
     case cShell
 }
 
-// MARK:- Class
+// MARK: - Class
 
 /**
  Collections of helper function for console manipuration.
  */
 class ConsoleHelper {
     
-    // MARK:- Dependencies
+    // MARK: - Dependencies
     
     private let consoleWrapper: ConsoleWrapper
     
-    // MARK:- Initializer
+    // MARK: - Initializer
     
     /**
      Initializer.
@@ -36,7 +36,7 @@ class ConsoleHelper {
         self.consoleWrapper = consoleWrapper
     }
     
-    // MARK: Instance Methods
+    // MARK: - Instance Methods
     
     /**
      Print single-line script to define an environment variable.

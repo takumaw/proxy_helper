@@ -3,15 +3,9 @@ disabled_rules:
   - todo
   - trailing_comma
   - trailing_whitespace
-  - mark
-  - trailing_newline
-  - unused_optional_binding
   - identifier_name
   - cyclomatic_complexity
   - function_body_length
-  - colon
-  - blanket_disable_command
-  - vertical_whitespace
 
 excluded:
   - .build
