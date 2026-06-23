@@ -4,19 +4,12 @@ This project is small and focused. Keep changes minimal, clean, and well-tested.
 
 ## Requirements
 
-Development targets macOS with Swift and Autotools.
+Development targets macOS with Swift.
 
 Required tools:
 
 * macOS 10.13 or later (Universal binary target macOS 10.13+)
 * Xcode or Xcode Command Line Tools (with Swift)
-* Autotools (`autoconf`, `automake`, `libtool`)
-
-You can install Autotools via Homebrew:
-
-```bash
-brew install autoconf automake
-```
 
 ## Build & install
 
@@ -33,24 +26,6 @@ To build a release-optimized binary:
 ```bash
 swift build -c release
 ```
-
-### Building & installing via Autotools
-
-For standard system installation, you can use the Autotools build system:
-
-1. **Generate Makefile:**
-   ```bash
-   aclocal
-   automake --add-missing
-   autoconf
-   ```
-
-2. **Configure, Build, and Install:**
-   ```bash
-   ./configure
-   make
-   make install
-   ```
 
 ### Troubleshooting: Synchronized directories (e.g., iCloud Drive)
 
