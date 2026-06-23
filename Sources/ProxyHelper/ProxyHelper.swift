@@ -8,14 +8,14 @@ import Foundation
  ProxyHelper controller class.
  */
 class ProxyHelper {
-    
+
     // MARK: - Dependencies
-    
+
     private let consoleHelper: ConsoleHelper
     private let proxyHelperCore: ProxyHelperCore
-    
+
     // MARK: - Initializer
-    
+
     /**
      Initializer.
      
@@ -26,11 +26,11 @@ class ProxyHelper {
         self.consoleHelper = consoleHelper
         self.proxyHelperCore = proxyHelperCore
     }
-    
+
     // MARK: - Instance Methods
-    
+
     // MARK: - Entry point
-    
+
     /**
      Main entry point.
      
@@ -43,7 +43,7 @@ class ProxyHelper {
         var shellStyle: ShellStyle?
         var enablePAC = false
         var targetURLString: String?
-        
+
         var i = 1
         while i < arguments.count {
             let arg = arguments[i]
@@ -66,7 +66,7 @@ class ProxyHelper {
             }
             i += 1
         }
-        
+
         // If unable to determine shell style by option,
         // Then determine one using SHELL ennvironment variable.
         if shellStyle == nil {
@@ -78,12 +78,12 @@ class ProxyHelper {
                 }
             }
         }
-        
+
         // Fallbacks to Bourne Shell style.
         if shellStyle == nil {
             shellStyle = .bourneShell
         }
-        
+
         if enablePAC {
             let defaultURL = URL(string: "https://www.google.com")!
             var targetURL = defaultURL
@@ -98,12 +98,12 @@ class ProxyHelper {
         } else {
             self.printProxySettings(shellStyle: shellStyle!)
         }
-        
+
         return 0
     }
-    
+
     // MARK: - Commands
-    
+
     /**
      Print proxy environment variables.
      
@@ -112,12 +112,12 @@ class ProxyHelper {
      */
     public func printProxySettings(shellStyle: ShellStyle) {
         let proxyEnnvironmentVariables: [String: String] = self.proxyHelperCore.getAllProxyEnvironmentVariables()
-        
+
         if proxyEnnvironmentVariables.keys.count > 0 {
             self.consoleHelper.printEnvironmentVariables(proxyEnnvironmentVariables, shellStyle: shellStyle)
         }
     }
-    
+
     /**
      Print proxy environment variables determined by PAC.
      
@@ -127,12 +127,12 @@ class ProxyHelper {
      */
     public func printPACProxySettings(targetURL: URL, shellStyle: ShellStyle) {
         let proxyEnvironmentVariables = self.proxyHelperCore.getPACProxyEnvironmentVariables(targetURL: targetURL)
-        
+
         if proxyEnvironmentVariables.keys.count > 0 {
             self.consoleHelper.printEnvironmentVariables(proxyEnvironmentVariables, shellStyle: shellStyle)
         }
     }
-    
+
     /**
      Print proxy environment variable determined with given URL.
      
@@ -142,10 +142,10 @@ class ProxyHelper {
      */
     public func printProxyForURL(_ url: URL, shellStyle: ShellStyle) {
         let proxyEnnvironmentVariables: [String: String] = self.proxyHelperCore.getProxyEnvironmentVariableForURL(url)
-        
+
         if proxyEnnvironmentVariables.keys.count > 0 {
             self.consoleHelper.printEnvironmentVariables(proxyEnnvironmentVariables, shellStyle: shellStyle)
         }
     }
-    
+
 }

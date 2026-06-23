@@ -8,9 +8,9 @@ import Foundation
  Simple wrapper class for console manipulation.
  */
 class ConsoleWrapper {
-    
+
     // MARK: - Initializer
-    
+
     /**
      Initializer.
      
@@ -18,9 +18,9 @@ class ConsoleWrapper {
      */
     init() {
     }
-    
+
     // MARK: - Instance Methods
-    
+
     /**
      Print message to given filehandle.
      
@@ -36,11 +36,11 @@ class ConsoleWrapper {
         guard let endData: Data = end.data(using: String.Encoding.utf8) else {
             return
         }
-        
+
         file.write(messageData)
         file.write(endData)
     }
-    
+
     /**
      Print message to the standard output.
      
@@ -51,7 +51,7 @@ class ConsoleWrapper {
     func out(_ message: String, end: String = "\n") {
         self.print(message, end: end, file: FileHandle.standardOutput)
     }
-    
+
     /**
      Print message to the standard error.
      
@@ -62,5 +62,5 @@ class ConsoleWrapper {
     func err(_ message: String, end: String = "\n") {
         self.print(message, end: end, file: FileHandle.standardError)
     }
-    
+
 }

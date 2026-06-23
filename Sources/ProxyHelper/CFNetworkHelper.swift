@@ -9,13 +9,13 @@ import CFNetwork
  Collections of helper functions for manipulating the proxy configurations from CFNetwork.
  */
 class CFNetworkHelper {
-    
+
     // MARK: - Instance Variables
-    
+
     private var proxySettings: CFDictionary?
-    
+
     // MARK: - Initializer
-    
+
     /**
      Initializer.
      
@@ -23,9 +23,9 @@ class CFNetworkHelper {
      */
     init() {
     }
-    
+
     // MARK: - Instance Methods
-    
+
     /**
      Get System Proxy Settings.
      
@@ -41,10 +41,10 @@ class CFNetworkHelper {
             }
             proxySettings = unmanagedProxySettings.takeRetainedValue()
         }
-        
+
         return proxySettings!
     }
-    
+
     /**
      Get System Proxy Settings.
      
@@ -56,7 +56,7 @@ class CFNetworkHelper {
         }
         return proxySettingsAsDictionary
     }
-    
+
     /**
      Get proxies for specified URL.
      
@@ -69,7 +69,7 @@ class CFNetworkHelper {
         let unmanagedProxies: Unmanaged<CFArray> = CFNetworkCopyProxiesForURL(url as CFURL, self.getProxySettings())
         return unmanagedProxies.takeRetainedValue()
     }
-    
+
     /**
      Get proxies for specified URL.
      
@@ -84,7 +84,7 @@ class CFNetworkHelper {
         }
         return proxiesForURLAsArray
     }
-    
+
     /**
      Execute PAC (Proxy Auto-Configuration) to resolve proxies for specified URL.
      
@@ -101,10 +101,10 @@ class CFNetworkHelper {
             var error: CFError?
             var isDone = false
         }
-        
+
         let context = PACContext()
         let contextPointer = Unmanaged.passRetained(context).toOpaque()
-        
+
         var streamContext = CFStreamClientContext(
             version: 0,
             info: contextPointer,
@@ -112,17 +112,17 @@ class CFNetworkHelper {
             release: nil,
             copyDescription: nil
         )
-        
+
         let callback: CFProxyAutoConfigurationResultCallback = { (clientInfo, proxies, error) in
             let context = Unmanaged<PACContext>.fromOpaque(clientInfo).takeUnretainedValue()
-            
+
             context.result = proxies
             context.error = error
             context.isDone = true
-            
+
             CFRunLoopStop(CFRunLoopGetCurrent())
         }
-        
+
         let runLoop = CFRunLoopGetCurrent()
         let runLoopSource = CFNetworkExecuteProxyAutoConfigurationURL(
             pacURL as CFURL,
@@ -130,23 +130,23 @@ class CFNetworkHelper {
             callback,
             &streamContext
         )
-        
+
         let mode = CFRunLoopMode.defaultMode
 
         CFRunLoopAddSource(runLoop, runLoopSource, mode)
-        
+
         _ = CFRunLoopRunInMode(mode, timeout, false)
-        
+
         CFRunLoopRemoveSource(runLoop, runLoopSource, mode)
         Unmanaged<PACContext>.fromOpaque(contextPointer).release()
-        
+
         if context.isDone {
             if let resolvedProxies = context.result as? [[String: Any]] {
                 return resolvedProxies
             }
         }
-        
+
         return nil
     }
-    
+
 }

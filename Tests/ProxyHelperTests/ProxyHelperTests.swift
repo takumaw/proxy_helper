@@ -6,7 +6,7 @@ import XCTest
 import class Foundation.Bundle
 
 final class ProxyHelperTests: XCTestCase {
-    
+
     static var allTests = [
         ("testQuitsCorrectly", testQuitsCorrectly),
         ("testShellOptionBourne", testShellOptionBourne),
@@ -14,7 +14,7 @@ final class ProxyHelperTests: XCTestCase {
         ("testPACWithoutSettings", testPACWithoutSettings),
         ("testInvalidArguments", testInvalidArguments),
     ]
-    
+
     func testQuitsCorrectly() throws {
         // Some of the APIs that we use below are available in macOS 10.13 and above.
         guard #available(macOS 10.13, *) else {
@@ -34,9 +34,9 @@ final class ProxyHelperTests: XCTestCase {
 
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         let output = String(data: data, encoding: .utf8)
-        
+
         print(output as Any)
-        
+
         XCTAssertEqual(process.terminationStatus, 0)
     }
 
@@ -59,12 +59,12 @@ final class ProxyHelperTests: XCTestCase {
 
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         let output = String(data: data, encoding: .utf8) ?? ""
-        
+
         if !output.isEmpty {
             XCTAssertTrue(output.contains("export"))
             XCTAssertFalse(output.contains("setenv"))
         }
-        
+
         XCTAssertEqual(process.terminationStatus, 0)
     }
 
@@ -87,12 +87,12 @@ final class ProxyHelperTests: XCTestCase {
 
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         let output = String(data: data, encoding: .utf8) ?? ""
-        
+
         if !output.isEmpty {
             XCTAssertTrue(output.contains("setenv"))
             XCTAssertFalse(output.contains("export"))
         }
-        
+
         XCTAssertEqual(process.terminationStatus, 0)
     }
 

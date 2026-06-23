@@ -8,17 +8,17 @@ import Foundation
  ProxyHelper application entry point class.
  */
 class Main {
-    
+
     // MARK: - Dependencies
-    
+
     private let cfNetworkHelper: CFNetworkHelper
     private let consoleHelper: ConsoleHelper
     private let consoleWrapper: ConsoleWrapper
     private let proxyHelper: ProxyHelper
     private let proxyHelperCore: ProxyHelperCore
-    
+
     // MARK: - Initializer
-    
+
     /**
      Initializer.
      
@@ -31,9 +31,9 @@ class Main {
         self.proxyHelperCore = ProxyHelperCore(cfNetworkHelper: cfNetworkHelper)
         self.proxyHelper = ProxyHelper(consoleHelper: consoleHelper, proxyHelperCore: proxyHelperCore)
     }
-    
+
     // MARK: - Instance Methods
-    
+
     /**
      Main function.
      
@@ -47,7 +47,7 @@ class Main {
     public func main(_ arguments: [String]) -> Int32 {
         return proxyHelper.main(arguments)
     }
-    
+
 }
 
 /// Entry point invocation.

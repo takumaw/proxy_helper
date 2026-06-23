@@ -20,13 +20,13 @@ enum ShellStyle {
  Collections of helper function for console manipuration.
  */
 class ConsoleHelper {
-    
+
     // MARK: - Dependencies
-    
+
     private let consoleWrapper: ConsoleWrapper
-    
+
     // MARK: - Initializer
-    
+
     /**
      Initializer.
      
@@ -35,9 +35,9 @@ class ConsoleHelper {
     init(consoleWrapper: ConsoleWrapper) {
         self.consoleWrapper = consoleWrapper
     }
-    
+
     // MARK: - Instance Methods
-    
+
     /**
      Print single-line script to define an environment variable.
      
@@ -50,10 +50,10 @@ class ConsoleHelper {
         let variables: [String: String] = [
             name: value,
         ]
-        
+
         self.printEnvironmentVariables(variables, shellStyle: shellStyle)
     }
-    
+
     /**
      Print single-line script to define multiple environment variables.
      
@@ -63,7 +63,7 @@ class ConsoleHelper {
      */
     func printEnvironmentVariables(_ variables: [String: String], shellStyle: ShellStyle = .bourneShell) {
         var messages: [String] = []
-        
+
         for (name, value) in variables {
             switch shellStyle {
             case .bourneShell:
@@ -73,9 +73,9 @@ class ConsoleHelper {
                 messages.append("setenv \(name) \"\(value)\";")
             }
         }
-        
+
         let joinedMessages: String = messages.joined(separator: " ")
         self.consoleWrapper.out(joinedMessages)
     }
-    
+
 }

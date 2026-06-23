@@ -9,13 +9,13 @@ import CFNetwork
  ProxyHelper logic class.
  */
 class ProxyHelperCore {
-    
+
     // MARK: - Dependencies
-    
+
     private let cfNetworkHelper: CFNetworkHelper
-    
+
     // MARK: - Initializer
-    
+
     /**
      Initializer.
      
@@ -24,9 +24,9 @@ class ProxyHelperCore {
     init(cfNetworkHelper: CFNetworkHelper) {
         self.cfNetworkHelper = cfNetworkHelper
     }
-    
+
     // MARK: - Instance Methods
-    
+
     /**
      Get HTTP proxy URL.
      
@@ -35,7 +35,7 @@ class ProxyHelperCore {
      */
     public func getHTTPProxyURL() -> String? {
         let proxySettingsDictionary: [String: Any] = self.cfNetworkHelper.getProxySettingsAsDictionary()
-        
+
         guard proxySettingsDictionary[kCFNetworkProxiesHTTPEnable as String] != nil else {
             return nil
         }
@@ -46,10 +46,10 @@ class ProxyHelperCore {
             return nil
         }
         let httpProxyURL: String = "http://\(httpProxy):\(httpPort)"
-        
+
         return httpProxyURL
     }
-    
+
     /**
      Get HTTPS proxy URL.
      
@@ -58,7 +58,7 @@ class ProxyHelperCore {
      */
     public func getHTTPSProxyURL() -> String? {
         let proxySettingsDictionary: [String: Any] = self.cfNetworkHelper.getProxySettingsAsDictionary()
-        
+
         guard proxySettingsDictionary[kCFNetworkProxiesHTTPSEnable as String] != nil else {
             return nil
         }
@@ -69,10 +69,10 @@ class ProxyHelperCore {
             return nil
         }
         let httpsProxyURL: String = "http://\(httpsProxy):\(httpsPort)"
-        
+
         return httpsProxyURL
     }
-    
+
     /**
      Get FTP proxy URL.
      
@@ -81,7 +81,7 @@ class ProxyHelperCore {
      */
     public func getFTPProxyURL() -> String? {
         let proxySettingsDictionary: [String: Any] = self.cfNetworkHelper.getProxySettingsAsDictionary()
-        
+
         guard proxySettingsDictionary[kCFNetworkProxiesFTPEnable as String] != nil else {
             return nil
         }
@@ -92,10 +92,10 @@ class ProxyHelperCore {
             return nil
         }
         let ftpProxyURL: String = "http://\(ftpProxy):\(ftpPort)"
-        
+
         return ftpProxyURL
     }
-    
+
     /**
      Get no proxy domains.
      
@@ -104,22 +104,22 @@ class ProxyHelperCore {
      */
     public func getNoProxyDomains() -> String? {
         var noProxyDomains: [String] = []
-        
+
         guard let hostNameRegex: NSRegularExpression = try? NSRegularExpression(pattern: "\\*\\.([^*]+)$") else {
             return nil
         }
         guard let hostAddressRegex: NSRegularExpression = try? NSRegularExpression(pattern: "^([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)$") else {
             return nil
         }
-        
+
         guard let proxiesExceptionsList: [String] = self.cfNetworkHelper.getProxySettingsAsDictionary()[kCFNetworkProxiesExceptionsList as String] as? [String] else {
             return nil
         }
-        
+
         for proxiesException: String in proxiesExceptionsList {
             var matchedResult: [NSTextCheckingResult]
             var matchedDomain: String
-            
+
             matchedResult = hostNameRegex.matches(in: proxiesException,
                                                   range: NSRange(location: 0, length: proxiesException.count))
             if matchedResult.count > 0 {
@@ -127,7 +127,7 @@ class ProxyHelperCore {
                 noProxyDomains.append(matchedDomain)
                 continue
             }
-            
+
             matchedResult = hostAddressRegex.matches(in: proxiesException,
                                                      range: NSRange(location: 0, length: proxiesException.count))
             if matchedResult.count > 0 {
@@ -136,14 +136,14 @@ class ProxyHelperCore {
                 continue
             }
         }
-        
+
         if noProxyDomains.count > 0 {
             return noProxyDomains.joined(separator: ",")
         } else {
             return nil
         }
     }
-    
+
     /**
      Get dedicated proxy URL for specified URL.
      
@@ -154,12 +154,12 @@ class ProxyHelperCore {
      */
     public func getProxyURLForURL(_ url: URL) -> String? {
         let proxies: [[String: Any]] = self.cfNetworkHelper.getProxiesForURLAsArray(url)
-        
+
         if proxies.count == 0 {
             return nil
         } else {
             let proxy: [String: Any] = proxies[0]
-            
+
             guard let proxyHostName: String = proxy[kCFProxyHostNameKey as String] as? String else {
                 return nil
             }
@@ -168,9 +168,9 @@ class ProxyHelperCore {
             }
             // swiftlint:disable:next force_cast
             let proxyType = proxy[kCFProxyTypeKey as String] as! CFString
-            
+
             var proxyScheme: String
-            
+
             switch proxyType {
             case kCFProxyTypeHTTP:
                 proxyScheme = "http"
@@ -183,11 +183,11 @@ class ProxyHelperCore {
             default:
                 return nil
             }
-            
+
             return "\(proxyScheme)://\(proxyHostName):\(proxyPortNumber)"
         }
     }
-    
+
     /**
      Get all proxy environment variables.
      
@@ -198,26 +198,26 @@ class ProxyHelperCore {
      */
     public func getAllProxyEnvironmentVariables() -> [String: String] {
         var proxyEnnvironmentVariables: [String: String] = [:]
-        
+
         if let httpProxyURL: String = self.getHTTPProxyURL() {
             proxyEnnvironmentVariables["http_proxy"] = httpProxyURL
         }
-        
+
         if let httpsProxyURL: String = self.getHTTPSProxyURL() {
             proxyEnnvironmentVariables["https_proxy"] = httpsProxyURL
         }
-        
+
         if let ftpProxyURL: String = self.getFTPProxyURL() {
             proxyEnnvironmentVariables["ftp_proxy"] = ftpProxyURL
         }
-        
+
         if let noProxyDomains: String = self.getNoProxyDomains() {
             proxyEnnvironmentVariables["no_proxy"] = noProxyDomains
         }
-        
+
         return proxyEnnvironmentVariables
     }
-    
+
     /**
      Get proxy environment variables determined with given URL.
      
@@ -229,21 +229,21 @@ class ProxyHelperCore {
      */
     public func getProxyEnvironmentVariableForURL(_ url: URL) -> [String: String] {
         var proxyEnnvironmentVariables: [String: String] = [:]
-        
+
         guard let urlScheme: String = url.scheme else {
             return proxyEnnvironmentVariables
         }
         let proxyIdentifier = "\(urlScheme)_proxy"
-        
+
         guard let proxyURL: String = self.getProxyURLForURL(url) else {
             return proxyEnnvironmentVariables
         }
-        
+
         proxyEnnvironmentVariables[proxyIdentifier] = proxyURL
-        
+
         return proxyEnnvironmentVariables
     }
-    
+
     /**
      Get system PAC (Proxy Auto-Configuration) URL if enabled.
      
@@ -252,7 +252,7 @@ class ProxyHelperCore {
      */
     public func getSystemPACURL() -> URL? {
         let proxySettingsDictionary = self.cfNetworkHelper.getProxySettingsAsDictionary()
-        
+
         guard let enablePAC = proxySettingsDictionary[kCFNetworkProxiesProxyAutoConfigEnable as String] as? Int, enablePAC == 1 else {
             return nil
         }
@@ -261,7 +261,7 @@ class ProxyHelperCore {
         }
         return URL(string: pacURLString)
     }
-    
+
     /**
      Get proxy environment variables by evaluating PAC for the specified URL.
      
@@ -272,35 +272,35 @@ class ProxyHelperCore {
      */
     public func getPACProxyEnvironmentVariables(targetURL: URL) -> [String: String] {
         var proxyEnvironmentVariables: [String: String] = [:]
-        
+
         guard let pacURL = self.getSystemPACURL() else {
             return proxyEnvironmentVariables
         }
-        
+
         guard let proxies = self.cfNetworkHelper.executePAC(pacURL: pacURL, targetURL: targetURL) else {
             return proxyEnvironmentVariables
         }
-        
+
         if proxies.isEmpty {
             return proxyEnvironmentVariables
         }
-        
+
         let proxy = proxies[0]
         guard let proxyTypeAny = proxy[kCFProxyTypeKey as String] else {
             return proxyEnvironmentVariables
         }
         // swiftlint:disable:next force_cast
         let proxyType = proxyTypeAny as! CFString
-        
+
         if proxyType == kCFProxyTypeNone {
             return proxyEnvironmentVariables
         }
-        
+
         guard let proxyHost = proxy[kCFProxyHostNameKey as String] as? String,
               let proxyPort = proxy[kCFProxyPortNumberKey as String] as? Int else {
             return proxyEnvironmentVariables
         }
-        
+
         var proxyScheme: String
         switch proxyType {
         case kCFProxyTypeHTTP:
@@ -314,17 +314,17 @@ class ProxyHelperCore {
         default:
             return proxyEnvironmentVariables
         }
-        
+
         let proxyURL = "\(proxyScheme)://\(proxyHost):\(proxyPort)"
-        
+
         if proxyType == kCFProxyTypeHTTP || proxyType == kCFProxyTypeHTTPS || proxyType == kCFProxyTypeSOCKS {
             proxyEnvironmentVariables["http_proxy"] = proxyURL
             proxyEnvironmentVariables["https_proxy"] = proxyURL
         } else if proxyType == kCFProxyTypeFTP {
             proxyEnvironmentVariables["ftp_proxy"] = proxyURL
         }
-        
+
         return proxyEnvironmentVariables
     }
-    
+
 }
