@@ -24,7 +24,7 @@ Homebrew tap is available at https://github.com/takumaw/homebrew-proxy_helper.
     brew trust takumaw/proxy_helper
     brew install proxy_helper
 
-Or, you may build a binary from the source. See [INSTALL.md](/INSTALL.md).
+Or, you may build a binary from the source. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## How it works
 
