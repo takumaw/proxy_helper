@@ -27,7 +27,11 @@ class ProxyHelper {
         self.proxyHelperCore = proxyHelperCore
     }
 
-    // MARK: - Instance Methods
+    private struct Options {
+        var shellStyle: ShellStyle?
+        var enablePAC = false
+        var targetURLString: String?
+    }
 
     // MARK: - Entry point
 
@@ -40,66 +44,85 @@ class ProxyHelper {
      Exit status code.
      */
     public func main(_ arguments: [String]) -> Int32 {
-        var shellStyle: ShellStyle?
-        var enablePAC = false
-        var targetURLString: String?
-
-        var i = 1
-        while i < arguments.count {
-            let arg = arguments[i]
-            switch arg {
-            case "-c":
-                shellStyle = .cShell
-            case "-s":
-                shellStyle = .bourneShell
-            case "-p", "--pac":
-                enablePAC = true
-            case "-u", "--url":
-                if i + 1 < arguments.count {
-                    targetURLString = arguments[i + 1]
-                    i += 1
-                } else {
-                    return 1
-                }
-            default:
-                break
-            }
-            i += 1
+        guard let options = self.parseArguments(arguments) else {
+            return 1
         }
 
-        // If unable to determine shell style by option,
-        // Then determine one using SHELL ennvironment variable.
-        if shellStyle == nil {
-            if let shellEnv: String = ProcessInfo.processInfo.environment["SHELL"] {
-                if shellEnv.hasSuffix("csh") {
-                    shellStyle = .cShell
-                } else {
-                    shellStyle = .bourneShell
-                }
-            }
-        }
+        let shellStyle = self.determineShellStyle(options.shellStyle)
 
-        // Fallbacks to Bourne Shell style.
-        if shellStyle == nil {
-            shellStyle = .bourneShell
-        }
-
-        if enablePAC {
+        if options.enablePAC {
             let defaultURL = URL(string: "https://www.google.com")!
             var targetURL = defaultURL
-            if let targetURLString = targetURLString {
+            if let targetURLString = options.targetURLString {
                 if let url = URL(string: targetURLString) {
                     targetURL = url
                 } else {
                     return 1
                 }
             }
-            self.printPACProxySettings(targetURL: targetURL, shellStyle: shellStyle!)
+            self.printPACProxySettings(targetURL: targetURL, shellStyle: shellStyle)
         } else {
-            self.printProxySettings(shellStyle: shellStyle!)
+            self.printProxySettings(shellStyle: shellStyle)
         }
 
         return 0
+    }
+
+    /**
+     Parse command line arguments.
+     
+     - parameters:
+       - arguments: Command line arguments.
+     - returns:
+       Parsed options or nil if arguments are invalid.
+     */
+    private func parseArguments(_ arguments: [String]) -> Options? {
+        var options = Options()
+        var i = 1
+        while i < arguments.count {
+            let arg = arguments[i]
+            switch arg {
+            case "-c":
+                options.shellStyle = .cShell
+            case "-s":
+                options.shellStyle = .bourneShell
+            case "-p", "--pac":
+                options.enablePAC = true
+            case "-u", "--url":
+                if i + 1 < arguments.count {
+                    options.targetURLString = arguments[i + 1]
+                    i += 1
+                } else {
+                    return nil
+                }
+            default:
+                break
+            }
+            i += 1
+        }
+        return options
+    }
+
+    /**
+     Determine shell style based on options and environment variables.
+     
+     - parameters:
+       - shellStyle: Shell style option if specified.
+     - returns:
+       Determined shell style.
+     */
+    private func determineShellStyle(_ shellStyle: ShellStyle?) -> ShellStyle {
+        if let shellStyle = shellStyle {
+            return shellStyle
+        }
+
+        if let shellEnv: String = ProcessInfo.processInfo.environment["SHELL"] {
+            if shellEnv.hasSuffix("csh") {
+                return .cShell
+            }
+        }
+
+        return .bourneShell
     }
 
     // MARK: - Commands
