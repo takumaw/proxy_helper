@@ -1,7 +1,5 @@
 disabled_rules:
   - todo
-  - cyclomatic_complexity
-  - function_body_length
 
 excluded:
   - .build

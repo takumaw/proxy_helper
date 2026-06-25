@@ -272,21 +272,32 @@ class ProxyHelperCore {
        Proxy environment variables.
      */
     public func getPACProxyEnvironmentVariables(targetURL: URL) -> [String: String] {
-        var proxyEnvironmentVariables: [String: String] = [:]
-
         guard let pacURL = self.getSystemPACURL() else {
-            return proxyEnvironmentVariables
+            return [:]
         }
 
         guard let proxies = self.cfNetworkHelper.executePAC(pacURL: pacURL, targetURL: targetURL) else {
-            return proxyEnvironmentVariables
+            return [:]
         }
 
         if proxies.isEmpty {
-            return proxyEnvironmentVariables
+            return [:]
         }
 
-        let proxy = proxies[0]
+        return self.mapProxyToEnvironmentVariables(proxies[0])
+    }
+
+    /**
+     Map a single proxy dictionary to environment variables.
+     
+     - parameters:
+       - proxy: Proxy dictionary from CFNetwork.
+     - returns:
+       Proxy environment variables dictionary.
+     */
+    private func mapProxyToEnvironmentVariables(_ proxy: [String: Any]) -> [String: String] {
+        var proxyEnvironmentVariables: [String: String] = [:]
+
         guard let proxyTypeAny = proxy[kCFProxyTypeKey as String] else {
             return proxyEnvironmentVariables
         }
