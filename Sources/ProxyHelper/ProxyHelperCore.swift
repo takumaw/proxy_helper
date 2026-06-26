@@ -108,9 +108,6 @@ class ProxyHelperCore {
         guard let hostNameRegex: NSRegularExpression = try? NSRegularExpression(pattern: "\\*\\.([^*]+)$") else {
             return nil
         }
-        guard let hostAddressRegex: NSRegularExpression = try? NSRegularExpression(pattern: "^([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)$") else {
-            return nil
-        }
 
         let proxySettings = self.cfNetworkHelper.getProxySettingsAsDictionary()
         guard let proxiesExceptionsList = proxySettings[kCFNetworkProxiesExceptionsList as String] as? [String] else {
@@ -129,11 +126,8 @@ class ProxyHelperCore {
                 continue
             }
 
-            matchedResult = hostAddressRegex.matches(in: proxiesException,
-                                                     range: NSRange(location: 0, length: proxiesException.count))
-            if matchedResult.count > 0 {
-                matchedDomain = String(proxiesException[Range(matchedResult[0].range(at: 1), in: proxiesException)!])
-                noProxyDomains.append(matchedDomain)
+            if self.isIPv4Address(proxiesException) {
+                noProxyDomains.append(proxiesException)
                 continue
             }
         }
@@ -143,6 +137,19 @@ class ProxyHelperCore {
         } else {
             return nil
         }
+    }
+
+    /**
+     Check if the given string is a valid IPv4 address.
+     
+     - parameters:
+       - ipString: The string to validate.
+     - returns:
+       True if it is a valid IPv4 address, false otherwise.
+     */
+    private func isIPv4Address(_ ipString: String) -> Bool {
+        var addr = in_addr()
+        return inet_pton(AF_INET, ipString, &addr) == 1
     }
 
     /**
