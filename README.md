@@ -69,6 +69,16 @@ Restart your terminal, and you should see:
     $ curl -O ...
     # Commands now work through your proxy!
 
+**Tip: Reloading proxy settings**
+
+If you switch networks while a terminal session is open, you will need to re-evaluate the proxy settings. Since `proxy_helper` is intentionally installed in `libexec` and not in your standard `$PATH`, you must specify the full path. 
+
+To make this easier, you can define an alias in your profile script:
+
+```bash
+alias reload_proxy="eval \`/opt/homebrew/opt/proxy_helper/libexec/proxy_helper -s\`"
+```
+
 ## Troubleshooting
 
 ### No proxy environment variables are set
