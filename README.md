@@ -1,9 +1,5 @@
 # proxy_helper
 
-(C)2018-2026 Takuma Watanabe takumaw@sfo.kuramae.ne.jp.
-
-License: MIT.
-
 ## Overview
 
 The `proxy_helper` utility reads the proxy settings from System Settings and configures
@@ -94,3 +90,11 @@ For detailed information on available options and how `no_proxy` rules are evalu
 ```bash
 man proxy_helper
 ```
+
+## Author
+
+* Takuma Watanabe <takumaw@sfo.kuramae.ne.jp>
+
+## License
+
+Released under the [MIT License](LICENSE).
