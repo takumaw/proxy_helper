@@ -29,7 +29,7 @@ proxy_helper-vX.Y.Z-macOS.tar.gz
 The tarball has the following prefix directory structure:
 
 ```text
-bin/
+libexec/
   └── proxy_helper          # Universal binary (x86_64 / arm64)
 share/
   └── man/

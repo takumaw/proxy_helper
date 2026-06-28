@@ -32,16 +32,16 @@ jobs:
           
           # Create archive directory structure
           ARCHIVE_DIR=".build/archive"
-          mkdir -p "${ARCHIVE_DIR}/bin"
+          mkdir -p "${ARCHIVE_DIR}/libexec"
           mkdir -p "${ARCHIVE_DIR}/share/man/man8"
           
           # Copy files
-          cp ".build/apple/Products/Release/proxy_helper" "${ARCHIVE_DIR}/bin/"
+          cp ".build/apple/Products/Release/proxy_helper" "${ARCHIVE_DIR}/libexec/"
           cp "ManPage/proxy_helper.8" "${ARCHIVE_DIR}/share/man/man8/"
           
           # Archive with prefix structure
           ARCHIVE_NAME="proxy_helper-${TAG_NAME}-macOS.tar.gz"
-          tar -czf "${ARCHIVE_NAME}" -C "${ARCHIVE_DIR}" "bin" "share"
+          tar -czf "${ARCHIVE_NAME}" -C "${ARCHIVE_DIR}" "libexec" "share"
           echo "archive=${ARCHIVE_NAME}" >> $GITHUB_OUTPUT
 
       - name: Extract Release Notes from HISTORY.md

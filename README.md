@@ -30,9 +30,11 @@ Or, you may build a binary from the source. See [CONTRIBUTING.md](CONTRIBUTING.m
 
 In your `/etc/profile` for BASH, or `/etc/zprofile` for ZSH, add the following code snippet: 
 
-    if [ -x /usr/local/opt/proxy_helper/libexec/proxy_helper ]; then
-        eval `/usr/local/opt/proxy_helper/libexec/proxy_helper -s`
+    if [ -x /opt/homebrew/opt/proxy_helper/libexec/proxy_helper ]; then
+        eval `/opt/homebrew/opt/proxy_helper/libexec/proxy_helper -s`
     fi
+
+*Note: If you are on an Intel-based Mac, replace `/opt/homebrew` with `/usr/local`.*
 
 Change the path to the binary when you install it to another directory (e.g. built from the source.)
 
@@ -40,20 +42,20 @@ You may innstead put the snippet on `~/.bash_profile`, `~/.zshenv` or `~/.zprofi
 
 For CSH or TCSH users, put the following code to e.g. `/etc/csh.login`:
 
-    if ( -x /usr/local/opt/proxy_helper/libexec/proxy_helper ) then
-        eval `/usr/local/opt/proxy_helper/libexec/proxy_helper -c`
+    if ( -x /opt/homebrew/opt/proxy_helper/libexec/proxy_helper ) then
+        eval `/opt/homebrew/opt/proxy_helper/libexec/proxy_helper -c`
     endif
 
 For Fish users, add the following snippet to `~/.config/fish/config.fish`:
 
-    if test -x /usr/local/opt/proxy_helper/libexec/proxy_helper
-        eval (/usr/local/opt/proxy_helper/libexec/proxy_helper -f)
+    if test -x /opt/homebrew/opt/proxy_helper/libexec/proxy_helper
+        eval (/opt/homebrew/opt/proxy_helper/libexec/proxy_helper -f)
     end
 
 For PowerShell users, add the following snippet to your profile script:
 
-    if (Test-Path /usr/local/opt/proxy_helper/libexec/proxy_helper) {
-        /usr/local/opt/proxy_helper/libexec/proxy_helper -w | Invoke-Expression
+    if (Test-Path /opt/homebrew/opt/proxy_helper/libexec/proxy_helper) {
+        /opt/homebrew/opt/proxy_helper/libexec/proxy_helper -w | Invoke-Expression
     }
 
 That's all set! All your newly invoked shells now have proxy environment variables set.
