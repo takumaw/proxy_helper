@@ -126,8 +126,9 @@ class ProxyHelperCore {
                 continue
             }
 
-            if self.isIPv4Address(proxiesException) {
-                noProxyDomains.append(proxiesException)
+            let validation = self.isValidIPOrCIDR(proxiesException)
+            if validation.isValid {
+                noProxyDomains.append(validation.cleanedString)
                 continue
             }
         }
@@ -150,6 +151,47 @@ class ProxyHelperCore {
     private func isIPv4Address(_ ipString: String) -> Bool {
         var addr = in_addr()
         return inet_pton(AF_INET, ipString, &addr) == 1
+    }
+
+    /// Check if the given string is a valid IPv6 address.
+    private func isIPv6Address(_ ipString: String) -> Bool {
+        var addr = in6_addr()
+        return inet_pton(AF_INET6, ipString, &addr) == 1
+    }
+
+    /// Validate if the given string is a valid IP address or CIDR subnet (IPv4/IPv6).
+    /// It also strips square brackets from the IP part if present.
+    private func isValidIPOrCIDR(_ rawString: String) -> (isValid: Bool, cleanedString: String) {
+        let cleaned = rawString.replacingOccurrences(of: "[", with: "")
+                               .replacingOccurrences(of: "]", with: "")
+
+        if cleaned.contains("/") {
+            let parts = cleaned.components(separatedBy: "/")
+            guard parts.count == 2 else {
+                return (false, "")
+            }
+            let ipPart = parts[0]
+            let maskPart = parts[1]
+            guard let mask = Int(maskPart) else {
+                return (false, "")
+            }
+
+            if self.isIPv4Address(ipPart) {
+                if mask >= 0 && mask <= 32 {
+                    return (true, cleaned)
+                }
+            } else if self.isIPv6Address(ipPart) {
+                if mask >= 0 && mask <= 128 {
+                    return (true, cleaned)
+                }
+            }
+        } else {
+            if self.isIPv4Address(cleaned) || self.isIPv6Address(cleaned) {
+                return (true, cleaned)
+            }
+        }
+
+        return (false, "")
     }
 
     /**

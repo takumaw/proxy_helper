@@ -13,6 +13,7 @@ final class ProxyHelperTests: XCTestCase {
         ("testShellOptionCShell", testShellOptionCShell),
         ("testPACWithoutSettings", testPACWithoutSettings),
         ("testInvalidArguments", testInvalidArguments),
+        ("testNoProxyDomainsWithIPv6AndCIDR", testNoProxyDomainsWithIPv6AndCIDR),
     ]
 
     func testQuitsCorrectly() throws {
@@ -143,5 +144,46 @@ final class ProxyHelperTests: XCTestCase {
       #else
         return Bundle.main.bundleURL
       #endif
+    }
+
+    func testNoProxyDomainsWithIPv6AndCIDR() throws {
+        let mockCFNetworkHelper = MockCFNetworkHelper()
+        mockCFNetworkHelper.mockProxySettings = [
+            kCFNetworkProxiesExceptionsList as String: [
+                "*.example.com",
+                "192.168.1.1",
+                "192.168.2.0/24",
+                "fe80::1",
+                "[fe80::2]",
+                "fe80::/64",
+                "[fe80::]/64",
+                "invalid_ip/999",
+                "1.1.1.1/33",
+                "fe80::1/129",
+                "example.com",
+            ],
+        ]
+
+        let core = ProxyHelperCore(cfNetworkHelper: mockCFNetworkHelper)
+        let result = core.getNoProxyDomains()
+
+        XCTAssertNotNil(result)
+        let domains = result?.components(separatedBy: ",") ?? []
+
+        XCTAssertEqual(domains.count, 7)
+        XCTAssertTrue(domains.contains("example.com"))
+        XCTAssertTrue(domains.contains("192.168.1.1"))
+        XCTAssertTrue(domains.contains("192.168.2.0/24"))
+        XCTAssertTrue(domains.contains("fe80::1"))
+        XCTAssertTrue(domains.contains("fe80::2"))
+        XCTAssertTrue(domains.contains("fe80::/64"))
+    }
+}
+
+class MockCFNetworkHelper: CFNetworkHelper {
+    var mockProxySettings: [String: Any] = [:]
+
+    override func getProxySettingsAsDictionary() -> [String: Any] {
+        return self.mockProxySettings
     }
 }
