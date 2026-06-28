@@ -1,6 +1,6 @@
 # proxy_helper
 
-(C)2018-2026 WATANABE Takuma takumaw@sfo.kuramae.ne.jp.
+(C)2018-2026 Takuma Watanabe takumaw@sfo.kuramae.ne.jp.
 
 Licence: MIT.
 
@@ -163,7 +163,7 @@ In your profile script for PowerShell, add the following code snippet:
 
 ## AUTHOR
 
-Takuma Watannabe <takumaw@sfo.kuramae.ne.jp>
+Takuma Watanabe <takumaw@sfo.kuramae.ne.jp>
 
 ## SEE ALSO
 
