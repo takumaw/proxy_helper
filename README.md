@@ -73,6 +73,19 @@ Re-open your terminal, and you see:
     $ curl -O ...
     # Commands works behind your proxy!
 
+## Troubleshooting
+
+### No proxy environment variables are set
+
+If you run `proxy_helper` and it does not output any variables, verify the following:
+
+1. **System Proxy Settings**: Ensure that at least one proxy (HTTP, HTTPS, FTP, or Bypass proxy settings) is actually enabled and configured in your macOS **System Settings > Network > [Your Active Interface] > Proxies**. If no proxies are enabled, `proxy_helper` exits silently without printing any variables.
+2. **Evaluate PAC Manually**: If your network uses a Proxy Auto-Configuration (PAC) script, you can manually test proxy resolution for a specific URL using the `-p` (or `--pac`) and `-u` (or `--url`) options:
+   ```bash
+   /opt/homebrew/opt/proxy_helper/libexec/proxy_helper -p -u https://www.google.com
+   ```
+   *Note: If you are on an Intel-based Mac, replace `/opt/homebrew` with `/usr/local`.*
+3. **Execution Check**: Ensure the shell profile script is correctly calling the `eval` (or `Invoke-Expression` for PowerShell) command with the appropriate path and shell flag (`-s`, `-c`, `-f`, or `-w`).
 
 ----
 
