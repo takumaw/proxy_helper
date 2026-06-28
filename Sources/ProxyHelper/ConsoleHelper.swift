@@ -29,11 +29,6 @@ class ConsoleHelper {
 
     // MARK: - Initializer
 
-    /**
-     Initializer.
-     
-     Injects dependencies.
-     */
     init(consoleWrapper: ConsoleWrapper) {
         self.consoleWrapper = consoleWrapper
     }
@@ -43,7 +38,7 @@ class ConsoleHelper {
     /**
      Prints a single-line script to define an environment variable.
      
-     - parameters:
+     - Parameters:
        - name: The environment variable name.
        - value: The environment variable value.
        - shellStyle: The shell style in which the script is generated.
@@ -59,7 +54,7 @@ class ConsoleHelper {
     /**
      Prints a single-line script to define multiple environment variables.
      
-     - parameters:
+     - Parameters:
        - variables: The environment variables in `[name: value]` format.
        - shellStyle: The shell style in which the script is generated.
      */

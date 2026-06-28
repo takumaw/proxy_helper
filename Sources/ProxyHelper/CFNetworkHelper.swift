@@ -16,9 +16,6 @@ class CFNetworkHelper {
 
     // MARK: - Initializer
 
-    /**
-     Initializer.
-     */
     init() {
     }
 
@@ -29,8 +26,7 @@ class CFNetworkHelper {
      
      The result is cached and reused for subsequent calls.
      
-     - returns:
-     The system proxy settings.
+     - Returns: The system proxy settings.
      */
     public func getProxySettings() -> CFDictionary {
         if proxySettings == nil {
@@ -46,7 +42,7 @@ class CFNetworkHelper {
     /**
      Returns the system proxy settings as a Swift dictionary.
      
-     - returns: The system proxy settings.
+     - Returns: The system proxy settings as a dictionary.
      */
     public func getProxySettingsAsDictionary() -> [String: Any] {
         guard let proxySettingsAsDictionary: [String: Any] = self.getProxySettings() as? [String: Any] else {
@@ -58,10 +54,9 @@ class CFNetworkHelper {
     /**
      Returns the proxies configured for a specified URL.
      
-     - parameters:
+     - Parameters:
        - url: The URL used to determine proxy addresses.
-     - returns:
-       The proxies.
+     - Returns: The CFArray of proxies.
      */
     public func getProxiesForURL(_ url: URL) -> CFArray {
         let unmanagedProxies: Unmanaged<CFArray> = CFNetworkCopyProxiesForURL(url as CFURL, self.getProxySettings())
@@ -71,10 +66,9 @@ class CFNetworkHelper {
     /**
      Returns the proxies configured for a specified URL as a Swift array.
      
-     - parameters:
+     - Parameters:
        - url: The URL used to determine proxy addresses.
-     - returns:
-     The proxies.
+     - Returns: The array of proxy dictionaries.
      */
     public func getProxiesForURLAsArray(_ url: URL) -> [[String: Any]] {
         guard let proxiesForURLAsArray = self.getProxiesForURL(url) as? [[String: Any]] else {
@@ -86,12 +80,11 @@ class CFNetworkHelper {
     /**
      Executes PAC (Proxy Auto-Configuration) script evaluation to resolve proxies for a specified URL.
      
-     - parameters:
+     - Parameters:
        - pacURL: The URL of the PAC script.
        - targetURL: The URL used to determine proxy addresses.
        - timeout: The timeout in seconds for resolution.
-     - returns:
-       The resolved proxies.
+     - Returns: The array of resolved proxy dictionaries, or `nil` if resolution failed.
      */
     public func executePAC(pacURL: URL, targetURL: URL, timeout: TimeInterval = 0.2) -> [[String: Any]]? {
         class PACContext {

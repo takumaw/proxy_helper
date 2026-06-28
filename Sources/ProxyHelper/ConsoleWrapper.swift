@@ -11,9 +11,6 @@ class ConsoleWrapper {
 
     // MARK: - Initializer
 
-    /**
-     Initializer.
-     */
     init() {
     }
 
@@ -22,7 +19,7 @@ class ConsoleWrapper {
     /**
      Prints a message to the given file handle.
      
-     - parameters:
+     - Parameters:
        - message: The message to print.
        - end: The message terminator.
        - file: The FileHandle to write the message to.
@@ -42,7 +39,7 @@ class ConsoleWrapper {
     /**
      Prints a message to standard output.
      
-     - parameters:
+     - Parameters:
        - message: The message to print.
        - end: The message terminator.
      */
@@ -53,7 +50,7 @@ class ConsoleWrapper {
     /**
      Prints a message to standard error.
      
-     - parameters:
+     - Parameters:
        - message: The message to print.
        - end: The message terminator.
      */

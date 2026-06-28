@@ -19,11 +19,6 @@ class Main {
 
     // MARK: - Initializer
 
-    /**
-     Initializer.
-     
-     Injects dependencies for the entire application.
-     */
     init() {
         self.cfNetworkHelper = CFNetworkHelper()
         self.consoleWrapper = ConsoleWrapper()
@@ -39,10 +34,9 @@ class Main {
      
      Invokes the controller class's main entry point.
      
-     - parameters:
+     - Parameters:
        - arguments: Command line arguments.
-     - returns:
-     The exit status code.
+     - Returns: The exit status code.
      */
     public func main(_ arguments: [String]) -> Int32 {
         return proxyHelper.main(arguments)

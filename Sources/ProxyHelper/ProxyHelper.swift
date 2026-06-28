@@ -16,11 +16,6 @@ class ProxyHelper {
 
     // MARK: - Initializer
 
-    /**
-     Initializer.
-     
-     Injects dependencies.
-     */
     init(consoleHelper: ConsoleHelper,
          proxyHelperCore: ProxyHelperCore) {
         self.consoleHelper = consoleHelper
@@ -38,10 +33,9 @@ class ProxyHelper {
     /**
      The main entry point of the utility.
      
-     - parameters:
-     - arguments: Command line arguments.
-     - returns:
-     The exit status code.
+     - Parameters:
+       - arguments: Command line arguments.
+     - Returns: The exit status code.
      */
     public func main(_ arguments: [String]) -> Int32 {
         guard let options = self.parseArguments(arguments) else {
@@ -71,10 +65,9 @@ class ProxyHelper {
     /**
      Parses command line arguments.
      
-     - parameters:
-       - arguments: Command line arguments.
-     - returns:
-       Parsed options or nil if arguments are invalid.
+     - Parameters:
+       - arguments: The command line arguments to parse.
+     - Returns: The parsed options, or `nil` if the arguments are invalid.
      */
     private func parseArguments(_ arguments: [String]) -> Options? {
         var options = Options()
@@ -110,10 +103,9 @@ class ProxyHelper {
     /**
      Determines the shell style based on options and environment variables.
      
-     - parameters:
+     - Parameters:
        - shellStyle: The specified shell style option, if any.
-     - returns:
-       The determined shell style.
+     - Returns: The determined shell style.
      */
     private func determineShellStyle(_ shellStyle: ShellStyle?) -> ShellStyle {
         if let shellStyle = shellStyle {
@@ -138,7 +130,7 @@ class ProxyHelper {
     /**
      Prints the proxy environment variables.
      
-     - parameters:
+     - Parameters:
        - shellStyle: The shell style in which the script is generated.
      */
     public func printProxySettings(shellStyle: ShellStyle) {
@@ -152,7 +144,7 @@ class ProxyHelper {
     /**
      Prints the proxy environment variables determined by the PAC script.
      
-     - parameters:
+     - Parameters:
        - targetURL: The target URL to resolve the proxy for.
        - shellStyle: The shell style in which the script is generated.
      */
@@ -167,7 +159,7 @@ class ProxyHelper {
     /**
      Prints the proxy environment variables determined for a given URL.
      
-     - parameters:
+     - Parameters:
        - url: The URL used to determine the proxy address.
        - shellStyle: The shell style in which the script is generated.
      */
