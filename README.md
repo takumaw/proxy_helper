@@ -87,84 +87,10 @@ If `proxy_helper` does not output any environment variables when run, check the 
    *Note: If you are on an Intel-based Mac, replace `/opt/homebrew` with `/usr/local`.*
 3. **Execution Check**: Ensure the shell profile script is correctly calling the `eval` (or `Invoke-Expression` for PowerShell) command with the appropriate path and shell flag (`-s`, `-c`, `-f`, or `-w`).
 
-----
+## Documentation
 
-# Man Page of `proxy_helper`
+For detailed information on available options and how `no_proxy` rules are evaluated, please refer to the manual page included in the installation:
 
-## NAME
-
-`proxy_helper` -- helper for constructing proxy environment variables
-
-## SYNOPSIS
-
-    proxy_helper [-c | -s | -f | -w] [-p] [-u <url>]
-
-## DESCRIPTION
-
-The `proxy_helper` utility reads the proxy settings from System Settings and configures
-the corresponding `http_proxy`, `https_proxy`, `ftp_proxy`, and `no_proxy` environment variables.
-
-Options:
-
-    -c      Generate C-shell commands on stdout.  This is the default if `$SHELL` ends with "csh".
-
-    -s      Generate Bourne shell commands on stdout.  This is the default if `$SHELL` does not match any other supported shells.
-
-    -f      Generate Fish shell commands on stdout.  This is the default if `$SHELL` ends with "fish".
-
-    -w      Generate PowerShell commands on stdout.  This is the default if `$SHELL` ends with "pwsh" or "powershell".
-
-    -p      Enable Proxy Auto-Configuration (PAC) script evaluation.
-
-    -u      The target URL used for PAC script evaluation. If not specified, "https://www.google.com" is used by default.
-
-The `proxy_helper` utility reads the proxy configuration from System Settings,
-and prints a one-liner shell script defining `*_proxy` environment variables.
-
-  * `http_proxy` - Generated from the "Web Proxy Server".
-  * `https_proxy` - Generated from the "Secure Web Proxy Server". 
-  * `ftp_proxy` - Generated from the "FTP Proxy Server".
-  * `no_proxy` - Generated from "Bypass proxy settings".
-
-The `no_proxy` variable is generated based on the rules below:
-
-  * If a host matches the pattern `*.some.domain.name`, then `some.domain.name` is added.
-  * If a host matches a valid IPv4 address, then the host is added as is.
-  * If a host matches a valid IPv6 address, then the host is added after removing square brackets (e.g., `fe80::1`).
-  * If a host matches a valid CIDR subnet notation (IPv4 or IPv6), then the host is added as is (e.g., `192.168.1.0/24` or `fe80::/64`).
-  * Ignored otherwise.
-
-The proxy settings are retrieved from the network interface with the highest priority of all active interfaces.
-
-After connecting to a different network, you can run this command manually to apply the new proxy settings.
-
-## USAGE
-
-The `proxy_helper` utility should not be invoked directly.
-It is intended only for use by the shell profile.
-
-In your `/etc/profile` for BASH, or `/etc/zprofile` for ZSH, add the following code snippet:
-
-    if [ -x PATH_TO_YOUR_INSTALLATION/proxy_helper ]; then
-        eval `PATH_TO_YOUR_INSTALLATION/proxy_helper -s`
-    fi
-
-In your `~/.config/fish/config.fish` for Fish, add the following code snippet:
-
-    if test -x PATH_TO_YOUR_INSTALLATION/proxy_helper
-        eval (PATH_TO_YOUR_INSTALLATION/proxy_helper -f)
-    end
-
-In your profile script for PowerShell, add the following code snippet:
-
-    if (Test-Path PATH_TO_YOUR_INSTALLATION/proxy_helper) {
-        PATH_TO_YOUR_INSTALLATION/proxy_helper -w | Invoke-Expression
-    }
-
-## AUTHOR
-
-Takuma Watanabe <takumaw@sfo.kuramae.ne.jp>
-
-## SEE ALSO
-
-  * `path_helper(8)`
+```bash
+man proxy_helper
+```
