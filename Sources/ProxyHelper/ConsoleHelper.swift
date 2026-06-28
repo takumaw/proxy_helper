@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Takuma Watanabe.
+ * Copyright (c) 2018-2026 Takuma Watanabe.
  */
 
 import Foundation
@@ -7,7 +7,7 @@ import Foundation
 // MARK: - Constants and Variables
 
 /**
- Shell style enumeration.
+ An enumeration of supported shell styles.
  */
 enum ShellStyle {
     case bourneShell
@@ -19,7 +19,7 @@ enum ShellStyle {
 // MARK: - Class
 
 /**
- Collections of helper functions for console manipulation.
+ A collection of helper functions for console manipulation.
  */
 class ConsoleHelper {
 
@@ -32,7 +32,7 @@ class ConsoleHelper {
     /**
      Initializer.
      
-     Inject dependencies.
+     Injects dependencies.
      */
     init(consoleWrapper: ConsoleWrapper) {
         self.consoleWrapper = consoleWrapper
@@ -41,12 +41,12 @@ class ConsoleHelper {
     // MARK: - Instance Methods
 
     /**
-     Print single-line script to define an environment variable.
+     Prints a single-line script to define an environment variable.
      
      - parameters:
-       - name: Environment variable name.
-       - value: Environment variable value.
-       - shellStyle: Shell style in which script is generated.
+       - name: The environment variable name.
+       - value: The environment variable value.
+       - shellStyle: The shell style in which the script is generated.
      */
     func printEnvironmentVariable(_ name: String, _ value: String, shellStyle: ShellStyle = .bourneShell) {
         let variables: [String: String] = [
@@ -57,11 +57,11 @@ class ConsoleHelper {
     }
 
     /**
-     Print single-line script to define multiple environment variables.
+     Prints a single-line script to define multiple environment variables.
      
      - parameters:
-       - variables: Environment variables in [name: value] style.
-       - shellStyle: Shell style in which script is generated.
+       - variables: The environment variables in `[name: value]` format.
+       - shellStyle: The shell style in which the script is generated.
      */
     func printEnvironmentVariables(_ variables: [String: String], shellStyle: ShellStyle = .bourneShell) {
         var messages: [String] = []

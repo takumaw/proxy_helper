@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2018 Takuma Watanabe.
+ * Copyright (c) 2018-2026 Takuma Watanabe.
  */
 
 import Foundation
 
 /**
- Simple wrapper class for console manipulation.
+ A wrapper class for handling console output operations.
  */
 class ConsoleWrapper {
 
@@ -13,8 +13,6 @@ class ConsoleWrapper {
 
     /**
      Initializer.
-     
-     Inject dependencies.
      */
     init() {
     }
@@ -22,13 +20,13 @@ class ConsoleWrapper {
     // MARK: - Instance Methods
 
     /**
-     Print message to given filehandle.
+     Prints a message to the given file handle.
      
      - parameters:
-       - message: Message to print.
-       - end: Message terminator.
-       - file: FileHandle to print message to.
-    */
+       - message: The message to print.
+       - end: The message terminator.
+       - file: The FileHandle to write the message to.
+     */
     func print(_ message: String, end: String = "\n", file: FileHandle) {
         guard let messageData: Data = message.data(using: String.Encoding.utf8) else {
             return
@@ -42,22 +40,22 @@ class ConsoleWrapper {
     }
 
     /**
-     Print message to the standard output.
+     Prints a message to standard output.
      
      - parameters:
-       - message: Message to print.
-       - end: Message terminator.
+       - message: The message to print.
+       - end: The message terminator.
      */
     func out(_ message: String, end: String = "\n") {
         self.print(message, end: end, file: FileHandle.standardOutput)
     }
 
     /**
-     Print message to the standard error.
+     Prints a message to standard error.
      
      - parameters:
-       - message: Message to print.
-       - end: Message terminator.
+       - message: The message to print.
+       - end: The message terminator.
      */
     func err(_ message: String, end: String = "\n") {
         self.print(message, end: end, file: FileHandle.standardError)

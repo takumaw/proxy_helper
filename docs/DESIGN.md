@@ -4,7 +4,7 @@
 
 `proxy_helper` is a macOS command-line utility that retrieves macOS system proxy configurations and exports them as shell environment variables.
 
-It is designed to easily propagate system proxy changes to terminal environments, supporting Bourne-style shells (e.g., `bash`, `zsh`), C-style shells (e.g., `csh`, `tcsh`), Fish Shell, and PowerShell (pwsh).
+It is designed to seamlessly propagate system proxy changes to terminal environments, supporting Bourne-style shells (e.g., `bash`, `zsh`), C-style shells (e.g., `csh`, `tcsh`), Fish Shell, and PowerShell (pwsh).
 
 ## Non-goals
 
@@ -15,7 +15,7 @@ This project does not:
 
 ## Architecture & source layout
 
-The program is structured in Swift, separating entry points, controller parser logic, business/mapping rules, and the raw Core Foundation APIs:
+The program is structured in Swift, separating entry points, CLI parsing logic, core business rules, and low-level Core Foundation APIs:
 
 ```text
 Sources/ProxyHelper/
@@ -47,13 +47,13 @@ Sources/ProxyHelper/
 * `-p`, `--pac`: Enables PAC evaluation for checking specific proxies.
 * `-u <url>`, `--url <url>`: Evaluation target URL used with PAC (defaults to `https://www.google.com`).
 
-If no shell option is provided, the tool checks the `$SHELL` environment variable to determine whether to output `setenv` (for `csh`/`tcsh`), `set -gx` (for `fish`), `$env:` (for `pwsh`/`powershell`), or `export` syntax. It defaults to Bourne-style.
+If no shell option is provided, the tool checks the `$SHELL` environment variable to determine the appropriate format to output `setenv` (for `csh`/`tcsh`), `set -gx` (for `fish`), `$env:` (for `pwsh`/`powershell`), or `export` syntax. It defaults to Bourne-style.
 
 ### PAC evaluation
 
 CFNetwork proxy auto-configuration resolution is asynchronous. 
 
-`CFNetworkHelper` calls `CFNetworkExecuteProxyAutoConfigurationURL` and schedules it on the current `CFRunLoop`. It blocks the main execution flow up to a configurable timeout (defaulting to 0.2 seconds) to receive the result from the PAC thread, then prints the evaluated proxy configuration.
+`CFNetworkHelper` calls `CFNetworkExecuteProxyAutoConfigurationURL` and schedules it on the current `CFRunLoop`. It blocks the main thread for up to a configurable timeout (defaulting to 0.2 seconds) to receive the result from the PAC thread, then prints the evaluated proxy configuration.
 
 ## Universal binary & compatibility
 

@@ -15,13 +15,13 @@
 .Sh DESCRIPTION
 The
 .Nm
-utility reads the proxy settings from System Preferences and constructs the
+utility reads the proxy settings from System Settings and configures the
 .Ev http_proxy ,
 .Ev https_proxy ,
 .Ev ftp_proxy
 and
 .Ev no_proxy
-environment variables respectively.
+environment variables.
 .Pp
 .Bl -tag -width Ds
 .It Fl c
@@ -31,7 +31,7 @@ ends with "csh".
 .It Fl s
 Generate Bourne shell commands on stdout.  This is the default if
 .Ev SHELL
-ends with none of the other supported shells.
+does not match any other supported shells.
 .It Fl f
 Generate Fish shell commands on stdout.  This is the default if
 .Ev SHELL
@@ -43,12 +43,12 @@ ends with "pwsh" or "powershell".
 .It Fl p | Fl -pac
 Enable Proxy Auto-Configuration (PAC) script evaluation.
 .It Fl u | Fl -url Ar url
-Target URL used for PAC script evaluation. If not specified, https://www.google.com is used.
+The target URL used for PAC script evaluation. If not specified, "https://www.google.com" is used by default.
 .El
 .Pp
 The
 .Nm
-utility reads the proxy configuration from the System Preferences, and prints a one-liner shell script defining
+utility reads the proxy configuration from System Settings, and prints a one-liner shell script defining
 .Ev *_proxy
 environment variables.
 .Pp
@@ -69,20 +69,20 @@ variable is generated based on the rules below:
 .Pp
 .Bl -bullet -offset indent -compact
 .It
-If a host matches to the pattern \fI*.some.domain.name\fP, then \fIsome.domain.name\fP is added.
+If a host matches the pattern \fI*.some.domain.name\fP, then \fIsome.domain.name\fP is added.
 .It
-If a host matches to a valid IPv4 address, then the host is added as is.
+If a host matches a valid IPv4 address, then the host is added as is.
 .It
-If a host matches to a valid IPv6 address, then the host is added after removing square brackets (e.g., \fIfe80::1\fP).
+If a host matches a valid IPv6 address, then the host is added after removing square brackets (e.g., \fIfe80::1\fP).
 .It
-If a host matches to a valid CIDR subnet notation (IPv4 or IPv6), then the host is added as is (e.g., \fI192.168.1.0/24\fP or \fIfe80::/64\fP).
+If a host matches a valid CIDR subnet notation (IPv4 or IPv6), then the host is added as is (e.g., \fI192.168.1.0/24\fP or \fIfe80::/64\fP).
 .It
 Ignored otherwise.
 .El
 .Pp
-The proxy settings are retrieved from the network interface with the highest priority amongst currently active ones.
+The proxy settings are retrieved from the network interface with the highest priority of all active interfaces.
 .Pp
-After you connected to another network environment, you may manually re-run this command to apply new proxy settings.
+After connecting to a different network, you can run this command manually to apply the new proxy settings.
 .Sh USAGE
 The
 .Nm 
@@ -91,7 +91,7 @@ utility should not be invoked directly.
 .Pp
 In your
 .I /etc/profile
-for BASH, or
+for Bash, or
 .I /etc/zprofile
 for ZSH, add the following code snippet:
 .Pp

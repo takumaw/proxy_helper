@@ -8,7 +8,7 @@ Development targets macOS with Swift.
 
 Required tools:
 
-* macOS 10.13 or later (Universal binary target macOS 10.13+)
+* macOS 10.13 or later (Universal binary targeting macOS 10.13+)
 * Xcode or Xcode Command Line Tools (with Swift)
 
 ## Build & install
@@ -62,7 +62,7 @@ CLANG_MODULE_CACHE_PATH=.build/ModuleCache SWIFT_MODULE_CACHE_PATH=.build/Module
 
 ### SwiftLint
 
-This project enforces Swift style and conventions using SwiftLint. Ensure your changes do not introduce lint warnings or errors. Linter settings are configured in `.swiftlint.yml`.
+This project enforces Swift coding style guidelines using SwiftLint. Make sure your changes do not introduce any warnings or errors. Linter settings are configured in `.swiftlint.yml`.
 
 ### Copyright header
 
@@ -74,7 +74,7 @@ Every Swift source file must start with the standard copyright comment header. F
  */
 ```
 
-Ensure new files include a matching header with the appropriate year.
+Make sure new files include a matching header with the correct year.
 
 ## Documentation
 

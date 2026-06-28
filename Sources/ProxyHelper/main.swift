@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2018 Takuma Watanabe.
+ * Copyright (c) 2018-2026 Takuma Watanabe.
  */
 
 import Foundation
 
 /**
- ProxyHelper application entry point class.
+ The entry point class for the ProxyHelper application.
  */
 class Main {
 
@@ -22,7 +22,7 @@ class Main {
     /**
      Initializer.
      
-     Inject dependencies of the entire application.
+     Injects dependencies for the entire application.
      */
     init() {
         self.cfNetworkHelper = CFNetworkHelper()
@@ -37,12 +37,12 @@ class Main {
     /**
      Main function.
      
-     Invoke controller class's main entry point.
+     Invokes the controller class's main entry point.
      
      - parameters:
        - arguments: Command line arguments.
      - returns:
-     Exit status code.
+     The exit status code.
      */
     public func main(_ arguments: [String]) -> Int32 {
         return proxyHelper.main(arguments)

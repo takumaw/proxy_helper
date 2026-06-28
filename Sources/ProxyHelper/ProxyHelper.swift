@@ -5,7 +5,7 @@
 import Foundation
 
 /**
- ProxyHelper controller class.
+ The controller class for the ProxyHelper utility.
  */
 class ProxyHelper {
 
@@ -19,7 +19,7 @@ class ProxyHelper {
     /**
      Initializer.
      
-     Inject dependencies.
+     Injects dependencies.
      */
     init(consoleHelper: ConsoleHelper,
          proxyHelperCore: ProxyHelperCore) {
@@ -36,12 +36,12 @@ class ProxyHelper {
     // MARK: - Entry point
 
     /**
-     Main entry point.
+     The main entry point of the utility.
      
      - parameters:
      - arguments: Command line arguments.
      - returns:
-     Exit status code.
+     The exit status code.
      */
     public func main(_ arguments: [String]) -> Int32 {
         guard let options = self.parseArguments(arguments) else {
@@ -69,7 +69,7 @@ class ProxyHelper {
     }
 
     /**
-     Parse command line arguments.
+     Parses command line arguments.
      
      - parameters:
        - arguments: Command line arguments.
@@ -108,12 +108,12 @@ class ProxyHelper {
     }
 
     /**
-     Determine shell style based on options and environment variables.
+     Determines the shell style based on options and environment variables.
      
      - parameters:
-       - shellStyle: Shell style option if specified.
+       - shellStyle: The specified shell style option, if any.
      - returns:
-       Determined shell style.
+       The determined shell style.
      */
     private func determineShellStyle(_ shellStyle: ShellStyle?) -> ShellStyle {
         if let shellStyle = shellStyle {
@@ -136,10 +136,10 @@ class ProxyHelper {
     // MARK: - Commands
 
     /**
-     Print proxy environment variables.
+     Prints the proxy environment variables.
      
      - parameters:
-     - shellStyle: Shell style in which script is generated.
+       - shellStyle: The shell style in which the script is generated.
      */
     public func printProxySettings(shellStyle: ShellStyle) {
         let proxyEnvironmentVariables: [String: String] = self.proxyHelperCore.getAllProxyEnvironmentVariables()
@@ -150,11 +150,11 @@ class ProxyHelper {
     }
 
     /**
-     Print proxy environment variables determined by PAC.
+     Prints the proxy environment variables determined by the PAC script.
      
      - parameters:
-       - targetURL: Target URL to resolve proxy for.
-       - shellStyle: Shell style in which script is generated.
+       - targetURL: The target URL to resolve the proxy for.
+       - shellStyle: The shell style in which the script is generated.
      */
     public func printPACProxySettings(targetURL: URL, shellStyle: ShellStyle) {
         let proxyEnvironmentVariables = self.proxyHelperCore.getPACProxyEnvironmentVariables(targetURL: targetURL)
@@ -165,11 +165,11 @@ class ProxyHelper {
     }
 
     /**
-     Print proxy environment variable determined with given URL.
+     Prints the proxy environment variables determined for a given URL.
      
      - parameters:
-     - url: URL using which to determine proxy address.
-     - shellStyle: Shell style in which script is generated.
+       - url: The URL used to determine the proxy address.
+       - shellStyle: The shell style in which the script is generated.
      */
     public func printProxyForURL(_ url: URL, shellStyle: ShellStyle) {
         let proxyEnvironmentVariables: [String: String] = self.proxyHelperCore.getProxyEnvironmentVariableForURL(url)

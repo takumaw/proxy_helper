@@ -6,7 +6,7 @@ import Foundation
 import CFNetwork
 
 /**
- Collections of helper functions for manipulating the proxy configurations from CFNetwork.
+ A collection of helper functions for manipulating proxy configurations from CFNetwork.
  */
 class CFNetworkHelper {
 
@@ -18,8 +18,6 @@ class CFNetworkHelper {
 
     /**
      Initializer.
-     
-     Inject dependencies.
      */
     init() {
     }
@@ -27,12 +25,12 @@ class CFNetworkHelper {
     // MARK: - Instance Methods
 
     /**
-     Get System Proxy Settings.
+     Returns the system proxy settings.
      
-     Result is cached and reused on other calls.
+     The result is cached and reused for subsequent calls.
      
      - returns:
-     System Proxy Settings.
+     The system proxy settings.
      */
     public func getProxySettings() -> CFDictionary {
         if proxySettings == nil {
@@ -46,9 +44,9 @@ class CFNetworkHelper {
     }
 
     /**
-     Get System Proxy Settings.
+     Returns the system proxy settings as a Swift dictionary.
      
-     - returns: System Proxy Settings.
+     - returns: The system proxy settings.
      */
     public func getProxySettingsAsDictionary() -> [String: Any] {
         guard let proxySettingsAsDictionary: [String: Any] = self.getProxySettings() as? [String: Any] else {
@@ -58,12 +56,12 @@ class CFNetworkHelper {
     }
 
     /**
-     Get proxies for specified URL.
+     Returns the proxies configured for a specified URL.
      
      - parameters:
-       - url: URL using which to determine proxy addresses.
+       - url: The URL used to determine proxy addresses.
      - returns:
-       Proxies.
+       The proxies.
      */
     public func getProxiesForURL(_ url: URL) -> CFArray {
         let unmanagedProxies: Unmanaged<CFArray> = CFNetworkCopyProxiesForURL(url as CFURL, self.getProxySettings())
@@ -71,12 +69,12 @@ class CFNetworkHelper {
     }
 
     /**
-     Get proxies for specified URL.
+     Returns the proxies configured for a specified URL as a Swift array.
      
      - parameters:
-       - url: URL using which to determine proxy addresses.
+       - url: The URL used to determine proxy addresses.
      - returns:
-     Proxies.
+     The proxies.
      */
     public func getProxiesForURLAsArray(_ url: URL) -> [[String: Any]] {
         guard let proxiesForURLAsArray = self.getProxiesForURL(url) as? [[String: Any]] else {
@@ -86,14 +84,14 @@ class CFNetworkHelper {
     }
 
     /**
-     Execute PAC (Proxy Auto-Configuration) to resolve proxies for specified URL.
+     Executes PAC (Proxy Auto-Configuration) script evaluation to resolve proxies for a specified URL.
      
      - parameters:
-       - pacURL: URL of the PAC script.
-       - targetURL: URL using which to determine proxy addresses.
-       - timeout: Timeout in seconds for resolution.
+       - pacURL: The URL of the PAC script.
+       - targetURL: The URL used to determine proxy addresses.
+       - timeout: The timeout in seconds for resolution.
      - returns:
-       Proxies resolved.
+       The resolved proxies.
      */
     public func executePAC(pacURL: URL, targetURL: URL, timeout: TimeInterval = 0.2) -> [[String: Any]]? {
         class PACContext {

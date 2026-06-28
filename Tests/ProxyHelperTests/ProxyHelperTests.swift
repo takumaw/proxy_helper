@@ -19,7 +19,7 @@ final class ProxyHelperTests: XCTestCase {
     ]
 
     func testQuitsCorrectly() throws {
-        // Some of the APIs that we use below are available in macOS 10.13 and above.
+        // Some of the APIs used below are available in macOS 10.13 and above.
         guard #available(macOS 10.13, *) else {
             return
         }
@@ -194,7 +194,7 @@ final class ProxyHelperTests: XCTestCase {
         XCTAssertEqual(process.terminationStatus, 0)
     }
 
-    /// Returns path to the built products directory.
+    /// Returns the path to the built products directory.
     var productsDirectory: URL {
       #if os(macOS)
         for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {

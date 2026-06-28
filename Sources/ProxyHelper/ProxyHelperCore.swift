@@ -6,7 +6,7 @@ import Foundation
 import CFNetwork
 
 /**
- ProxyHelper logic class.
+ The core business logic class for the ProxyHelper utility.
  */
 class ProxyHelperCore {
 
@@ -28,10 +28,10 @@ class ProxyHelperCore {
     // MARK: - Instance Methods
 
     /**
-     Get HTTP proxy URL.
+     Returns the HTTP proxy URL.
      
      - returns:
-     HTTP proxy URL.
+     The HTTP proxy URL.
      */
     public func getHTTPProxyURL() -> String? {
         let proxySettingsDictionary: [String: Any] = self.cfNetworkHelper.getProxySettingsAsDictionary()
@@ -51,10 +51,10 @@ class ProxyHelperCore {
     }
 
     /**
-     Get HTTPS proxy URL.
+     Returns the HTTPS proxy URL.
      
      - returns:
-     HTTPS proxy URL.
+     The HTTPS proxy URL.
      */
     public func getHTTPSProxyURL() -> String? {
         let proxySettingsDictionary: [String: Any] = self.cfNetworkHelper.getProxySettingsAsDictionary()
@@ -74,10 +74,10 @@ class ProxyHelperCore {
     }
 
     /**
-     Get FTP proxy URL.
+     Returns the FTP proxy URL.
      
      - returns:
-     FTP proxy URL.
+     The FTP proxy URL.
      */
     public func getFTPProxyURL() -> String? {
         let proxySettingsDictionary: [String: Any] = self.cfNetworkHelper.getProxySettingsAsDictionary()
@@ -97,10 +97,10 @@ class ProxyHelperCore {
     }
 
     /**
-     Get no proxy domains.
+     Returns the list of domains to bypass proxies for (no_proxy).
      
      - returns:
-     No proxy domains. (comma-separated)
+     The no proxy domains (comma-separated).
      */
     public func getNoProxyDomains() -> String? {
         var noProxyDomains: [String] = []
@@ -141,25 +141,25 @@ class ProxyHelperCore {
     }
 
     /**
-     Check if the given string is a valid IPv4 address.
+     Checks if the given string is a valid IPv4 address.
      
      - parameters:
        - ipString: The string to validate.
      - returns:
-       True if it is a valid IPv4 address, false otherwise.
+       True if it is a valid IPv4 address; otherwise, false.
      */
     private func isIPv4Address(_ ipString: String) -> Bool {
         var addr = in_addr()
         return inet_pton(AF_INET, ipString, &addr) == 1
     }
 
-    /// Check if the given string is a valid IPv6 address.
+    /// Checks if the given string is a valid IPv6 address.
     private func isIPv6Address(_ ipString: String) -> Bool {
         var addr = in6_addr()
         return inet_pton(AF_INET6, ipString, &addr) == 1
     }
 
-    /// Validate if the given string is a valid IP address or CIDR subnet (IPv4/IPv6).
+    /// Validates if the given string is a valid IP address or CIDR subnet (IPv4/IPv6).
     /// It also strips square brackets from the IP part if present.
     private func isValidIPOrCIDR(_ rawString: String) -> (isValid: Bool, cleanedString: String) {
         let cleaned = rawString.replacingOccurrences(of: "[", with: "")
@@ -195,12 +195,12 @@ class ProxyHelperCore {
     }
 
     /**
-     Get dedicated proxy URL for specified URL.
+     Returns the dedicated proxy URL for a specified URL.
      
      - parameters:
-       - url: URL using which to determine proxy URL.
+       - url: The URL used to determine the proxy URL.
      - returns:
-     Dedicated proxy URL for specified URL.
+     The dedicated proxy URL for the specified URL.
      */
     public func getProxyURLForURL(_ url: URL) -> String? {
         let proxies: [[String: Any]] = self.cfNetworkHelper.getProxiesForURLAsArray(url)
@@ -239,12 +239,12 @@ class ProxyHelperCore {
     }
 
     /**
-     Get all proxy environment variables.
+     Returns all proxy environment variables.
      
      - parameters:
-       - shellStyle: Shell style in which script is generated.
+       - shellStyle: The shell style in which the script is generated.
      - returns:
-     Proxy environment variables.
+     The proxy environment variables.
      */
     public func getAllProxyEnvironmentVariables() -> [String: String] {
         var proxyEnvironmentVariables: [String: String] = [:]
@@ -269,13 +269,13 @@ class ProxyHelperCore {
     }
 
     /**
-     Get proxy environment variables determined with given URL.
+     Returns the proxy environment variables determined for a given URL.
      
      - parameters:
-       - url: URL using which to determine proxy address.
-       - shellStyle: Shell style in which script is generated.
+       - url: The URL used to determine the proxy address.
+       - shellStyle: The shell style in which the script is generated.
      - returns:
-     Proxy environment variables.
+     The proxy environment variables.
      */
     public func getProxyEnvironmentVariableForURL(_ url: URL) -> [String: String] {
         var proxyEnvironmentVariables: [String: String] = [:]
@@ -295,10 +295,10 @@ class ProxyHelperCore {
     }
 
     /**
-     Get system PAC (Proxy Auto-Configuration) URL if enabled.
+     Returns the system PAC (Proxy Auto-Configuration) URL if enabled.
      
      - returns:
-       PAC URL.
+       The PAC URL.
      */
     public func getSystemPACURL() -> URL? {
         let proxySettingsDictionary = self.cfNetworkHelper.getProxySettingsAsDictionary()
@@ -313,12 +313,12 @@ class ProxyHelperCore {
     }
 
     /**
-     Get proxy environment variables by evaluating PAC for the specified URL.
+     Returns proxy environment variables by evaluating the PAC script for a specified URL.
      
      - parameters:
-       - url: Target URL to evaluate against the PAC.
+       - targetURL: The target URL to evaluate against the PAC.
      - returns:
-       Proxy environment variables.
+       The proxy environment variables.
      */
     public func getPACProxyEnvironmentVariables(targetURL: URL) -> [String: String] {
         guard let pacURL = self.getSystemPACURL() else {
@@ -337,12 +337,12 @@ class ProxyHelperCore {
     }
 
     /**
-     Map a single proxy dictionary to environment variables.
+     Maps a single proxy dictionary to environment variables.
      
      - parameters:
-       - proxy: Proxy dictionary from CFNetwork.
+       - proxy: The proxy dictionary from CFNetwork.
      - returns:
-       Proxy environment variables dictionary.
+       The proxy environment variables dictionary.
      */
     private func mapProxyToEnvironmentVariables(_ proxy: [String: Any]) -> [String: String] {
         var proxyEnvironmentVariables: [String: String] = [:]

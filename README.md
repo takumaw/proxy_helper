@@ -2,12 +2,12 @@
 
 (C)2018-2026 Takuma Watanabe takumaw@sfo.kuramae.ne.jp.
 
-Licence: MIT.
+License: MIT.
 
-## What is this
+## Overview
 
-The `proxy_helper` utility reads the proxy settings from System Preferences and constructs
-the `http_proxy`, `https_proxy`, `ftp_proxy` and `no_proxy` environment variables respectively.
+The `proxy_helper` utility reads the proxy settings from System Settings and configures
+the corresponding `http_proxy`, `https_proxy`, `ftp_proxy`, and `no_proxy` environment variables.
 
     $ proxy_helper -s
     http_proxy="http://YOUR_HTTP_PROXY_SERVER:PORT"; export http_proxy; https_proxy="http://YOUR_HTTPS_PROXY_SERVER:PORT"; export https_proxy; ftp_proxy="http://YOUR_FTP_PROXY_SERVER:PORT"; export ftp_proxy; no_proxy="NO_PROXIES"; export no_proxy;
@@ -18,17 +18,17 @@ the `http_proxy`, `https_proxy`, `ftp_proxy` and `no_proxy` environment variable
 
 ## How to install
 
-Homebrew tap is available at https://github.com/takumaw/homebrew-proxy_helper.
+A Homebrew tap is available at https://github.com/takumaw/homebrew-proxy_helper.
 
     brew tap takumaw/proxy_helper
     brew trust takumaw/proxy_helper
     brew install proxy_helper
 
-Or, you may build a binary from the source. See [CONTRIBUTING.md](CONTRIBUTING.md).
+Alternatively, you can build the binary from source. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## How it works
 
-In your `/etc/profile` for BASH, or `/etc/zprofile` for ZSH, add the following code snippet: 
+Add the following code snippet to `/etc/profile` (for Bash) or `/etc/zprofile` (for Zsh): 
 
     if [ -x /opt/homebrew/opt/proxy_helper/libexec/proxy_helper ]; then
         eval `/opt/homebrew/opt/proxy_helper/libexec/proxy_helper -s`
@@ -36,11 +36,11 @@ In your `/etc/profile` for BASH, or `/etc/zprofile` for ZSH, add the following c
 
 *Note: If you are on an Intel-based Mac, replace `/opt/homebrew` with `/usr/local`.*
 
-Change the path to the binary when you install it to another directory (e.g. built from the source.)
+If you install the binary to a different directory (e.g., when building from source), update the path accordingly.
 
-You may instead put the snippet on `~/.bash_profile`, `~/.zshenv` or `~/.zprofile`.
+You can also place the snippet in `~/.bash_profile`, `~/.zshenv`, or `~/.zprofile`.
 
-For CSH or TCSH users, put the following code to e.g. `/etc/csh.login`:
+For Csh or Tcsh users, add the following code to `/etc/csh.login` (or another initialization file):
 
     if ( -x /opt/homebrew/opt/proxy_helper/libexec/proxy_helper ) then
         eval `/opt/homebrew/opt/proxy_helper/libexec/proxy_helper -c`
@@ -58,9 +58,9 @@ For PowerShell users, add the following snippet to your profile script:
         /opt/homebrew/opt/proxy_helper/libexec/proxy_helper -w | Invoke-Expression
     }
 
-That's all set! All your newly invoked shells now have proxy environment variables set.
+You're all set! Any newly opened shells will now have the proxy environment variables automatically configured.
 
-Re-open your terminal, and you see:
+Restart your terminal, and you should see:
 
     $ export
        :
@@ -71,13 +71,13 @@ Re-open your terminal, and you see:
        :
     
     $ curl -O ...
-    # Commands works behind your proxy!
+    # Commands now work through your proxy!
 
 ## Troubleshooting
 
 ### No proxy environment variables are set
 
-If you run `proxy_helper` and it does not output any variables, verify the following:
+If `proxy_helper` does not output any environment variables when run, check the following:
 
 1. **System Proxy Settings**: Ensure that at least one proxy (HTTP, HTTPS, FTP, or Bypass proxy settings) is actually enabled and configured in your macOS **System Settings > Network > [Your Active Interface] > Proxies**. If no proxies are enabled, `proxy_helper` exits silently without printing any variables.
 2. **Evaluate PAC Manually**: If your network uses a Proxy Auto-Configuration (PAC) script, you can manually test proxy resolution for a specific URL using the `-p` (or `--pac`) and `-u` (or `--url`) options:
@@ -101,14 +101,14 @@ If you run `proxy_helper` and it does not output any variables, verify the follo
 
 ## DESCRIPTION
 
-The `proxy_helper` utility reads the proxy settings from System Preferences and constructs
-the `http_proxy`, `https_proxy`, `ftp_proxy` and `no_proxy` environment variables respectively.
+The `proxy_helper` utility reads the proxy settings from System Settings and configures
+the corresponding `http_proxy`, `https_proxy`, `ftp_proxy`, and `no_proxy` environment variables.
 
 Options:
 
     -c      Generate C-shell commands on stdout.  This is the default if `$SHELL` ends with "csh".
 
-    -s      Generate Bourne shell commands on stdout.  This is the default if `$SHELL` ends with none of the other supported shells.
+    -s      Generate Bourne shell commands on stdout.  This is the default if `$SHELL` does not match any other supported shells.
 
     -f      Generate Fish shell commands on stdout.  This is the default if `$SHELL` ends with "fish".
 
@@ -116,9 +116,9 @@ Options:
 
     -p      Enable Proxy Auto-Configuration (PAC) script evaluation.
 
-    -u      Target URL used for PAC script evaluation. If not specified, "https://www.google.com" is used as a default.
+    -u      The target URL used for PAC script evaluation. If not specified, "https://www.google.com" is used by default.
 
-The `proxy_helper` utility reads the proxy configuration from the System Preferences,
+The `proxy_helper` utility reads the proxy configuration from System Settings,
 and prints a one-liner shell script defining `*_proxy` environment variables.
 
   * `http_proxy` - Generated from the "Web Proxy Server".
@@ -128,15 +128,15 @@ and prints a one-liner shell script defining `*_proxy` environment variables.
 
 The `no_proxy` variable is generated based on the rules below:
 
-  * If a host matches to the pattern `*.some.domain.name`, then `some.domain.name` is added.
-  * If a host matches to a valid IPv4 address, then the host is added as is.
-  * If a host matches to a valid IPv6 address, then the host is added after removing square brackets (e.g., `fe80::1`).
-  * If a host matches to a valid CIDR subnet notation (IPv4 or IPv6), then the host is added as is (e.g., `192.168.1.0/24` or `fe80::/64`).
+  * If a host matches the pattern `*.some.domain.name`, then `some.domain.name` is added.
+  * If a host matches a valid IPv4 address, then the host is added as is.
+  * If a host matches a valid IPv6 address, then the host is added after removing square brackets (e.g., `fe80::1`).
+  * If a host matches a valid CIDR subnet notation (IPv4 or IPv6), then the host is added as is (e.g., `192.168.1.0/24` or `fe80::/64`).
   * Ignored otherwise.
 
-The proxy settings are retrieved from the network interface with the highest priority amongst currently active ones.
+The proxy settings are retrieved from the network interface with the highest priority of all active interfaces.
 
-After you connected to another network environment, you may manually re-run this command to apply new proxy settings.
+After connecting to a different network, you can run this command manually to apply the new proxy settings.
 
 ## USAGE
 

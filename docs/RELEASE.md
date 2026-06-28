@@ -41,11 +41,11 @@ share/
 
 Before creating a tag:
 
-* `README.md` is current.
+* `README.md` is up to date.
 * `HISTORY.md` contains the release entry under the heading `## X.Y.Z`.
 * `ManPage/proxy_helper.8` is updated if CLI options changed.
 * CI passes on `main`.
-* Local build and tests pass successfully.
+* Local builds and tests pass.
 
 ## Creating a release
 
@@ -82,7 +82,7 @@ The GitHub Actions release workflow (`.github/workflows/release.yml`) executes t
 The workflow will fail if:
 * The pushed tag does not match `v*`.
 * The corresponding version header (e.g. `## 0.1.0`) is missing in `HISTORY.md`.
-* Tests or building step fails.
+* The test or build step fails.
 
 If the workflow fails before creating a release, fix the root cause on `main`, update/move the tag, and push again.
 If it fails mid-release, clean up the incomplete GitHub Release and tag in the web interface and git before retrying.
