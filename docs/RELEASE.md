@@ -73,7 +73,7 @@ The GitHub Actions release workflow (`.github/workflows/release.yml`) executes t
 1. **Checkout**: Checks out the tag codebase.
 2. **Test**: Runs `swift test --disable-sandbox` to ensure regressions are caught.
 3. **Build**: Compiles a Universal binary (targeting both `arm64` and `x86_64` macOS architectures) with release optimizations.
-4. **Package**: Structures the binary and man page into a prefix layout (`bin/` and `share/`) and packages them as `proxy_helper-vX.Y.Z-macOS.tar.gz`.
+4. **Package**: Structures the binary and man page into a prefix layout (`libexec/` and `share/`) and packages them as `proxy_helper-vX.Y.Z-macOS.tar.gz`.
 5. **Release Notes**: Uses `awk` to extract the release changelog section matching the tag version from `HISTORY.md`.
 6. **Publish**: Creates a GitHub Release, attaches the extracted release notes, and uploads the `.tar.gz` archive.
 
