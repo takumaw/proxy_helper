@@ -1,6 +1,6 @@
 # proxy_helper
 
-(C)2018 WATANABE Takuma takumaw@sfo.kuramae.ne.jp.
+(C)2018-2026 WATANABE Takuma takumaw@sfo.kuramae.ne.jp.
 
 Licence: MIT.
 
