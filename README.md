@@ -91,13 +91,13 @@ the `http_proxy`, `https_proxy`, `ftp_proxy` and `no_proxy` environment variable
 
 Options:
 
-    -c      Generate C-shell commands on stdout.  This is the default if SHELL ends with "csh".
+    -c      Generate C-shell commands on stdout.  This is the default if `$SHELL` ends with "csh".
 
-    -s      Generate Bourne shell commands on stdout.  This is the default if SHELL ends with none of the other supported shells.
+    -s      Generate Bourne shell commands on stdout.  This is the default if `$SHELL` ends with none of the other supported shells.
 
-    -f      Generate Fish shell commands on stdout.  This is the default if SHELL ends with "fish".
+    -f      Generate Fish shell commands on stdout.  This is the default if `$SHELL` ends with "fish".
 
-    -w      Generate PowerShell commands on stdout.  This is the default if SHELL ends with "pwsh" or "powershell".
+    -w      Generate PowerShell commands on stdout.  This is the default if `$SHELL` ends with "pwsh" or "powershell".
 
     -p      Enable Proxy Auto-Configuration (PAC) script evaluation.
 
