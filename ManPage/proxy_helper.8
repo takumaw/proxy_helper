@@ -1,7 +1,7 @@
 .\"
 .\" Copyright (c) 2018 Takuma Watanabe.  All rights reserved.
 .\"
-.Dd June 16, 2026
+.Dd June 28, 2026
 .Dt proxy_helper 8
 .Os "Mac OS X"
 .Sh NAME
@@ -9,7 +9,7 @@
 .Nd helper for constructing proxy environment variables
 .Sh SYNOPSIS
 .Nm
-.Op Fl c | Fl s
+.Op Fl c | Fl s | Fl f | Fl w
 .Op Fl p | Fl -pac
 .Op Fl u | Fl -url Ar url
 .Sh DESCRIPTION
@@ -31,7 +31,15 @@ ends with "csh".
 .It Fl s
 Generate Bourne shell commands on stdout.  This is the default if
 .Ev SHELL
-does not end with "csh".
+ends with none of the other supported shells.
+.It Fl f
+Generate Fish shell commands on stdout.  This is the default if
+.Ev SHELL
+ends with "fish".
+.It Fl w
+Generate PowerShell commands on stdout.  This is the default if
+.Ev SHELL
+ends with "pwsh" or "powershell".
 .It Fl p | Fl -pac
 Enable Proxy Auto-Configuration (PAC) script evaluation.
 .It Fl u | Fl -url Ar url
@@ -63,7 +71,11 @@ variable is generated based on the rules below:
 .It
 If a host matches to the pattern \fI*.some.domain.name\fP, then \fIsome.domain.name\fP is added.
 .It
-If a host matches to the pattern \fI[0-9]+.[0-9]+.[0-9]+.[0-9]\fP (that is, IPv4 address), then the host is added as is.
+If a host matches to a valid IPv4 address, then the host is added as is.
+.It
+If a host matches to a valid IPv6 address, then the host is added after removing square brackets (e.g., \fIfe80::1\fP).
+.It
+If a host matches to a valid CIDR subnet notation (IPv4 or IPv6), then the host is added as is (e.g., \fI192.168.1.0/24\fP or \fIfe80::/64\fP).
 .It
 Ignored otherwise.
 .El
@@ -87,6 +99,24 @@ for ZSH, add the following code snippet:
 if [ -x PATH_TO_YOUR_INSTALLATION/proxy_helper ]; then
     eval `PATH_TO_YOUR_INSTALLATION/proxy_helper -s`
 fi
+.Ed
+.Pp
+In your
+.I ~/.config/fish/config.fish
+for Fish, add the following code snippet:
+.Pp
+.Bd -literal -offset indent
+if test -x PATH_TO_YOUR_INSTALLATION/proxy_helper
+    eval (PATH_TO_YOUR_INSTALLATION/proxy_helper -f)
+end
+.Ed
+.Pp
+In your profile script for PowerShell, add the following code snippet:
+.Pp
+.Bd -literal -offset indent
+if (Test-Path PATH_TO_YOUR_INSTALLATION/proxy_helper) {
+    PATH_TO_YOUR_INSTALLATION/proxy_helper -w | Invoke-Expression
+}
 .Ed
 .Sh AUTHOR
 Takuma Watanabe <takumaw@sfo.kuramae.ne.jp>

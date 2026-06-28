@@ -44,6 +44,18 @@ For CSH or TCSH users, put the following code to e.g. `/etc/csh.login`:
         eval `/usr/local/opt/proxy_helper/libexec/proxy_helper -c`
     endif
 
+For Fish users, add the following snippet to `~/.config/fish/config.fish`:
+
+    if test -x /usr/local/opt/proxy_helper/libexec/proxy_helper
+        eval (/usr/local/opt/proxy_helper/libexec/proxy_helper -f)
+    end
+
+For PowerShell users, add the following snippet to your profile script:
+
+    if (Test-Path /usr/local/opt/proxy_helper/libexec/proxy_helper) {
+        /usr/local/opt/proxy_helper/libexec/proxy_helper -w | Invoke-Expression
+    }
+
 That's all set! All your newly invoked shells now have proxy environment variables set.
 
 Re-open your terminal, and you see:
@@ -70,7 +82,7 @@ Re-open your terminal, and you see:
 
 ## SYNOPSIS
 
-    proxy_helper [-c | -s] [-p] [-u <url>]
+    proxy_helper [-c | -s | -f | -w] [-p] [-u <url>]
 
 ## DESCRIPTION
 
@@ -81,7 +93,11 @@ Options:
 
     -c      Generate C-shell commands on stdout.  This is the default if SHELL ends with "csh".
 
-    -s      Generate Bourne shell commands on stdout.  This is the default if SHELL does not end with "csh".
+    -s      Generate Bourne shell commands on stdout.  This is the default if SHELL ends with none of the other supported shells.
+
+    -f      Generate Fish shell commands on stdout.  This is the default if SHELL ends with "fish".
+
+    -w      Generate PowerShell commands on stdout.  This is the default if SHELL ends with "pwsh" or "powershell".
 
     -p      Enable Proxy Auto-Configuration (PAC) script evaluation.
 
@@ -98,7 +114,9 @@ and prints a one-liner shell script defining `*_proxy` environment variables.
 The `no_proxy` variable is generated based on the rules below:
 
   * If a host matches to the pattern `*.some.domain.name`, then `some.domain.name` is added.
-  * If a host matches to the pattern `[0-9]+.[0-9]+.[0-9]+.[0-9]+` (that is, IPv4 address), then the host is added as is.
+  * If a host matches to a valid IPv4 address, then the host is added as is.
+  * If a host matches to a valid IPv6 address, then the host is added after removing square brackets (e.g., `fe80::1`).
+  * If a host matches to a valid CIDR subnet notation (IPv4 or IPv6), then the host is added as is (e.g., `192.168.1.0/24` or `fe80::/64`).
   * Ignored otherwise.
 
 The proxy settings are retrieved from the network interface with the highest priority amongst currently active ones.
@@ -115,6 +133,18 @@ In your `/etc/profile` for BASH, or `/etc/zprofile` for ZSH, add the following c
     if [ -x PATH_TO_YOUR_INSTALLATION/proxy_helper ]; then
         eval `PATH_TO_YOUR_INSTALLATION/proxy_helper -s`
     fi
+
+In your `~/.config/fish/config.fish` for Fish, add the following code snippet:
+
+    if test -x PATH_TO_YOUR_INSTALLATION/proxy_helper
+        eval (PATH_TO_YOUR_INSTALLATION/proxy_helper -f)
+    end
+
+In your profile script for PowerShell, add the following code snippet:
+
+    if (Test-Path PATH_TO_YOUR_INSTALLATION/proxy_helper) {
+        PATH_TO_YOUR_INSTALLATION/proxy_helper -w | Invoke-Expression
+    }
 
 ## AUTHOR
 

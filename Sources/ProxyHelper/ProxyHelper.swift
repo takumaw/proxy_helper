@@ -86,6 +86,10 @@ class ProxyHelper {
                 options.shellStyle = .cShell
             case "-s":
                 options.shellStyle = .bourneShell
+            case "-f", "--fish":
+                options.shellStyle = .fish
+            case "-w", "--powershell":
+                options.shellStyle = .powerShell
             case "-p", "--pac":
                 options.enablePAC = true
             case "-u", "--url":
@@ -119,6 +123,10 @@ class ProxyHelper {
         if let shellEnv: String = ProcessInfo.processInfo.environment["SHELL"] {
             if shellEnv.hasSuffix("csh") {
                 return .cShell
+            } else if shellEnv.hasSuffix("fish") {
+                return .fish
+            } else if shellEnv.hasSuffix("pwsh") || shellEnv.hasSuffix("powershell") {
+                return .powerShell
             }
         }
 

@@ -4,7 +4,7 @@
 
 `proxy_helper` is a macOS command-line utility that retrieves macOS system proxy configurations and exports them as shell environment variables.
 
-It is designed to easily propagate system proxy changes to terminal environments, supporting both Bourne-style shells (e.g., `bash`, `zsh`) and C-style shells (e.g., `csh`, `tcsh`).
+It is designed to easily propagate system proxy changes to terminal environments, supporting Bourne-style shells (e.g., `bash`, `zsh`), C-style shells (e.g., `csh`, `tcsh`), Fish Shell, and PowerShell (pwsh).
 
 ## Non-goals
 
@@ -33,7 +33,7 @@ Sources/ProxyHelper/
 * **`ProxyHelper` (`ProxyHelper.swift`)**: Parses arguments, detects the active shell format (from options or the `$SHELL` environment variable), and coordinates formatting outputs.
 * **`ProxyHelperCore` (`ProxyHelperCore.swift`)**: Maps the dictionary values of macOS system proxies into typical UNIX environment variables (`http_proxy`, `https_proxy`, `ftp_proxy`, `no_proxy`).
 * **`CFNetworkHelper` (`CFNetworkHelper.swift`)**: Integrates with Core Foundation APIs (`CFNetworkCopySystemProxySettings`, `CFNetworkCopyProxiesForURL`, `CFNetworkExecuteProxyAutoConfigurationURL`) to fetch live system configurations.
-* **`ConsoleHelper` (`ConsoleHelper.swift`)**: Generates shell-compliant code snippets (e.g., `export name="value";` or `setenv name "value";`).
+* **`ConsoleHelper` (`ConsoleHelper.swift`)**: Generates shell-compliant code snippets (e.g., `export name="value";`, `setenv name "value";`, `set -gx name "value";`, or `$env:name = "value";`).
 * **`ConsoleWrapper` (`ConsoleWrapper.swift`)**: Wraps standard out/error handles using `FileHandle` in UTF-8.
 
 ## Command line & PAC resolution
@@ -42,10 +42,12 @@ Sources/ProxyHelper/
 
 * `-c`: Formats output for C-style shells (`csh`, `tcsh`).
 * `-s`: Formats output for Bourne-style shells (`sh`, `bash`, `zsh`).
+* `-f`, `--fish`: Formats output for Fish Shell.
+* `-w`, `--powershell`: Formats output for PowerShell (pwsh).
 * `-p`, `--pac`: Enables PAC evaluation for checking specific proxies.
 * `-u <url>`, `--url <url>`: Evaluation target URL used with PAC (defaults to `https://www.google.com`).
 
-If no shell option is provided, the tool checks the `$SHELL` environment variable to determine whether to output `setenv` (for `*csh`) or `export` syntax. It defaults to Bourne-style.
+If no shell option is provided, the tool checks the `$SHELL` environment variable to determine whether to output `setenv` (for `csh`/`tcsh`), `set -gx` (for `fish`), `$env:` (for `pwsh`/`powershell`), or `export` syntax. It defaults to Bourne-style.
 
 ### PAC evaluation
 

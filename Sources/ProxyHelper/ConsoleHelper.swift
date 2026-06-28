@@ -12,6 +12,8 @@ import Foundation
 enum ShellStyle {
     case bourneShell
     case cShell
+    case fish
+    case powerShell
 }
 
 // MARK: - Class
@@ -71,6 +73,10 @@ class ConsoleHelper {
                 messages.append("export \(name);")
             case .cShell:
                 messages.append("setenv \(name) \"\(value)\";")
+            case .fish:
+                messages.append("set -gx \(name) \"\(value)\";")
+            case .powerShell:
+                messages.append("$env:\(name) = \"\(value)\";")
             }
         }
 

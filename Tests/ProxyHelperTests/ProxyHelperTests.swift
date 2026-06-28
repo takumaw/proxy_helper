@@ -14,6 +14,8 @@ final class ProxyHelperTests: XCTestCase {
         ("testPACWithoutSettings", testPACWithoutSettings),
         ("testInvalidArguments", testInvalidArguments),
         ("testNoProxyDomainsWithIPv6AndCIDR", testNoProxyDomainsWithIPv6AndCIDR),
+        ("testShellOptionFish", testShellOptionFish),
+        ("testShellOptionPowerShell", testShellOptionPowerShell),
     ]
 
     func testQuitsCorrectly() throws {
@@ -132,6 +134,64 @@ final class ProxyHelperTests: XCTestCase {
         process.waitUntilExit()
 
         XCTAssertEqual(process.terminationStatus, 1)
+    }
+
+    func testShellOptionFish() throws {
+        guard #available(macOS 10.13, *) else {
+            return
+        }
+
+        let fooBinary = productsDirectory.appendingPathComponent("proxy_helper")
+
+        let process = Process()
+        process.executableURL = fooBinary
+        process.arguments = ["-f"]
+
+        let pipe = Pipe()
+        process.standardOutput = pipe
+
+        try process.run()
+        process.waitUntilExit()
+
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        let output = String(data: data, encoding: .utf8) ?? ""
+
+        if !output.isEmpty {
+            XCTAssertTrue(output.contains("set -gx"))
+            XCTAssertFalse(output.contains("export"))
+            XCTAssertFalse(output.contains("setenv"))
+        }
+
+        XCTAssertEqual(process.terminationStatus, 0)
+    }
+
+    func testShellOptionPowerShell() throws {
+        guard #available(macOS 10.13, *) else {
+            return
+        }
+
+        let fooBinary = productsDirectory.appendingPathComponent("proxy_helper")
+
+        let process = Process()
+        process.executableURL = fooBinary
+        process.arguments = ["-w"]
+
+        let pipe = Pipe()
+        process.standardOutput = pipe
+
+        try process.run()
+        process.waitUntilExit()
+
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        let output = String(data: data, encoding: .utf8) ?? ""
+
+        if !output.isEmpty {
+            XCTAssertTrue(output.contains("$env:"))
+            XCTAssertFalse(output.contains("export"))
+            XCTAssertFalse(output.contains("setenv"))
+        }
+
+        XCTAssertEqual(process.terminationStatus, 0)
     }
 
     /// Returns path to the built products directory.
