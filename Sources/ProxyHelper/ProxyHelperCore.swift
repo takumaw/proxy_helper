@@ -19,7 +19,7 @@ class ProxyHelperCore {
     /**
      Initializer.
      
-     Inject depencendies.
+     Inject dependencies.
      */
     init(cfNetworkHelper: CFNetworkHelper) {
         self.cfNetworkHelper = cfNetworkHelper
@@ -247,25 +247,25 @@ class ProxyHelperCore {
      Proxy environment variables.
      */
     public func getAllProxyEnvironmentVariables() -> [String: String] {
-        var proxyEnnvironmentVariables: [String: String] = [:]
+        var proxyEnvironmentVariables: [String: String] = [:]
 
         if let httpProxyURL: String = self.getHTTPProxyURL() {
-            proxyEnnvironmentVariables["http_proxy"] = httpProxyURL
+            proxyEnvironmentVariables["http_proxy"] = httpProxyURL
         }
 
         if let httpsProxyURL: String = self.getHTTPSProxyURL() {
-            proxyEnnvironmentVariables["https_proxy"] = httpsProxyURL
+            proxyEnvironmentVariables["https_proxy"] = httpsProxyURL
         }
 
         if let ftpProxyURL: String = self.getFTPProxyURL() {
-            proxyEnnvironmentVariables["ftp_proxy"] = ftpProxyURL
+            proxyEnvironmentVariables["ftp_proxy"] = ftpProxyURL
         }
 
         if let noProxyDomains: String = self.getNoProxyDomains() {
-            proxyEnnvironmentVariables["no_proxy"] = noProxyDomains
+            proxyEnvironmentVariables["no_proxy"] = noProxyDomains
         }
 
-        return proxyEnnvironmentVariables
+        return proxyEnvironmentVariables
     }
 
     /**
@@ -278,20 +278,20 @@ class ProxyHelperCore {
      Proxy environment variables.
      */
     public func getProxyEnvironmentVariableForURL(_ url: URL) -> [String: String] {
-        var proxyEnnvironmentVariables: [String: String] = [:]
+        var proxyEnvironmentVariables: [String: String] = [:]
 
         guard let urlScheme: String = url.scheme else {
-            return proxyEnnvironmentVariables
+            return proxyEnvironmentVariables
         }
         let proxyIdentifier = "\(urlScheme)_proxy"
 
         guard let proxyURL: String = self.getProxyURLForURL(url) else {
-            return proxyEnnvironmentVariables
+            return proxyEnvironmentVariables
         }
 
-        proxyEnnvironmentVariables[proxyIdentifier] = proxyURL
+        proxyEnvironmentVariables[proxyIdentifier] = proxyURL
 
-        return proxyEnnvironmentVariables
+        return proxyEnvironmentVariables
     }
 
     /**

@@ -19,7 +19,7 @@ class ProxyHelper {
     /**
      Initializer.
      
-     Inject depencendies.
+     Inject dependencies.
      */
     init(consoleHelper: ConsoleHelper,
          proxyHelperCore: ProxyHelperCore) {
@@ -142,10 +142,10 @@ class ProxyHelper {
      - shellStyle: Shell style in which script is generated.
      */
     public func printProxySettings(shellStyle: ShellStyle) {
-        let proxyEnnvironmentVariables: [String: String] = self.proxyHelperCore.getAllProxyEnvironmentVariables()
+        let proxyEnvironmentVariables: [String: String] = self.proxyHelperCore.getAllProxyEnvironmentVariables()
 
-        if proxyEnnvironmentVariables.keys.count > 0 {
-            self.consoleHelper.printEnvironmentVariables(proxyEnnvironmentVariables, shellStyle: shellStyle)
+        if proxyEnvironmentVariables.keys.count > 0 {
+            self.consoleHelper.printEnvironmentVariables(proxyEnvironmentVariables, shellStyle: shellStyle)
         }
     }
 
@@ -172,10 +172,10 @@ class ProxyHelper {
      - shellStyle: Shell style in which script is generated.
      */
     public func printProxyForURL(_ url: URL, shellStyle: ShellStyle) {
-        let proxyEnnvironmentVariables: [String: String] = self.proxyHelperCore.getProxyEnvironmentVariableForURL(url)
+        let proxyEnvironmentVariables: [String: String] = self.proxyHelperCore.getProxyEnvironmentVariableForURL(url)
 
-        if proxyEnnvironmentVariables.keys.count > 0 {
-            self.consoleHelper.printEnvironmentVariables(proxyEnnvironmentVariables, shellStyle: shellStyle)
+        if proxyEnvironmentVariables.keys.count > 0 {
+            self.consoleHelper.printEnvironmentVariables(proxyEnvironmentVariables, shellStyle: shellStyle)
         }
     }
 

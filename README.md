@@ -38,7 +38,7 @@ In your `/etc/profile` for BASH, or `/etc/zprofile` for ZSH, add the following c
 
 Change the path to the binary when you install it to another directory (e.g. built from the source.)
 
-You may innstead put the snippet on `~/.bash_profile`, `~/.zshenv` or `~/.zprofile`.
+You may instead put the snippet on `~/.bash_profile`, `~/.zshenv` or `~/.zprofile`.
 
 For CSH or TCSH users, put the following code to e.g. `/etc/csh.login`:
 

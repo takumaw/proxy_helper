@@ -19,7 +19,7 @@ enum ShellStyle {
 // MARK: - Class
 
 /**
- Collections of helper function for console manipuration.
+ Collections of helper functions for console manipulation.
  */
 class ConsoleHelper {
 
