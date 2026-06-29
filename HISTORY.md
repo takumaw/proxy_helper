@@ -1,4 +1,11 @@
 # HISTORY
+
+## 0.2.0
+
+  * Replaced `fatalError` and force-casts with proper error propagation (`ProxyError`, `throws`) for graceful failure.
+  * Changed the release artifact directory structure from `bin/` to `libexec/`.
+  * Expanded unit test coverage for CFNetwork dictionary parsing logic using mock objects.
+
 ## 0.1.0
 
   * Added Support for Proxy Auto-Configuration (PAC) script evaluation with the `-p`/`--pac` and `-u`/`--url` options.
