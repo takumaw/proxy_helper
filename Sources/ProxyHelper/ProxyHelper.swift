@@ -44,19 +44,24 @@ class ProxyHelper {
 
         let shellStyle = self.determineShellStyle(options.shellStyle)
 
-        if options.enablePAC {
-            let defaultURL = URL(string: "https://www.google.com")!
-            var targetURL = defaultURL
-            if let targetURLString = options.targetURLString {
-                if let url = URL(string: targetURLString) {
-                    targetURL = url
-                } else {
-                    return 1
+        do {
+            if options.enablePAC {
+                let defaultURL = URL(string: "https://www.google.com")!
+                var targetURL = defaultURL
+                if let targetURLString = options.targetURLString {
+                    if let url = URL(string: targetURLString) {
+                        targetURL = url
+                    } else {
+                        return 1
+                    }
                 }
+                try self.printPACProxySettings(targetURL: targetURL, shellStyle: shellStyle)
+            } else {
+                try self.printProxySettings(shellStyle: shellStyle)
             }
-            self.printPACProxySettings(targetURL: targetURL, shellStyle: shellStyle)
-        } else {
-            self.printProxySettings(shellStyle: shellStyle)
+        } catch {
+            fputs("Error: \(error.localizedDescription)\n", stderr)
+            return 1
         }
 
         return 0
@@ -133,8 +138,8 @@ class ProxyHelper {
      - Parameters:
        - shellStyle: The shell style in which the script is generated.
      */
-    public func printProxySettings(shellStyle: ShellStyle) {
-        let proxyEnvironmentVariables: [String: String] = self.proxyHelperCore.getAllProxyEnvironmentVariables()
+    public func printProxySettings(shellStyle: ShellStyle) throws {
+        let proxyEnvironmentVariables: [String: String] = try self.proxyHelperCore.getAllProxyEnvironmentVariables()
 
         if proxyEnvironmentVariables.keys.count > 0 {
             self.consoleHelper.printEnvironmentVariables(proxyEnvironmentVariables, shellStyle: shellStyle)
@@ -148,8 +153,8 @@ class ProxyHelper {
        - targetURL: The target URL to resolve the proxy for.
        - shellStyle: The shell style in which the script is generated.
      */
-    public func printPACProxySettings(targetURL: URL, shellStyle: ShellStyle) {
-        let proxyEnvironmentVariables = self.proxyHelperCore.getPACProxyEnvironmentVariables(targetURL: targetURL)
+    public func printPACProxySettings(targetURL: URL, shellStyle: ShellStyle) throws {
+        let proxyEnvironmentVariables = try self.proxyHelperCore.getPACProxyEnvironmentVariables(targetURL: targetURL)
 
         if proxyEnvironmentVariables.keys.count > 0 {
             self.consoleHelper.printEnvironmentVariables(proxyEnvironmentVariables, shellStyle: shellStyle)
@@ -163,8 +168,8 @@ class ProxyHelper {
        - url: The URL used to determine the proxy address.
        - shellStyle: The shell style in which the script is generated.
      */
-    public func printProxyForURL(_ url: URL, shellStyle: ShellStyle) {
-        let proxyEnvironmentVariables: [String: String] = self.proxyHelperCore.getProxyEnvironmentVariableForURL(url)
+    public func printProxyForURL(_ url: URL, shellStyle: ShellStyle) throws {
+        let proxyEnvironmentVariables: [String: String] = try self.proxyHelperCore.getProxyEnvironmentVariableForURL(url)
 
         if proxyEnvironmentVariables.keys.count > 0 {
             self.consoleHelper.printEnvironmentVariables(proxyEnvironmentVariables, shellStyle: shellStyle)

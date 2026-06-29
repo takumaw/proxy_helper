@@ -225,7 +225,7 @@ final class ProxyHelperTests: XCTestCase {
         ]
 
         let core = ProxyHelperCore(cfNetworkHelper: mockCFNetworkHelper)
-        let result = core.getNoProxyDomains()
+        let result = try core.getNoProxyDomains()
 
         XCTAssertNotNil(result)
         let domains = result?.components(separatedBy: ",") ?? []
@@ -243,7 +243,7 @@ final class ProxyHelperTests: XCTestCase {
 class MockCFNetworkHelper: CFNetworkHelper {
     var mockProxySettings: [String: Any] = [:]
 
-    override func getProxySettingsAsDictionary() -> [String: Any] {
+    override func getProxySettingsAsDictionary() throws -> [String: Any] {
         return self.mockProxySettings
     }
 }

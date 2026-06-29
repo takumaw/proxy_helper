@@ -5,6 +5,20 @@
 import Foundation
 import CFNetwork
 
+public enum ProxyError: Error, LocalizedError {
+    case cfNetworkSettingsLoadFailure
+    case cfNetworkProxiesForURLFailure
+
+    public var errorDescription: String? {
+        switch self {
+        case .cfNetworkSettingsLoadFailure:
+            return "Failed to load system proxy settings via CFNetwork."
+        case .cfNetworkProxiesForURLFailure:
+            return "Failed to resolve proxies for the specified URL."
+        }
+    }
+}
+
 /**
  A collection of helper functions for manipulating proxy configurations from CFNetwork.
  */
@@ -28,10 +42,10 @@ class CFNetworkHelper {
      
      - Returns: The system proxy settings.
      */
-    public func getProxySettings() -> CFDictionary {
+    public func getProxySettings() throws -> CFDictionary {
         if proxySettings == nil {
             guard let unmanagedProxySettings: Unmanaged<CFDictionary> = CFNetworkCopySystemProxySettings() else {
-                fatalError("Failed to load CFNetworkCopySystemProxySettings.")
+                throw ProxyError.cfNetworkSettingsLoadFailure
             }
             proxySettings = unmanagedProxySettings.takeRetainedValue()
         }
@@ -44,9 +58,9 @@ class CFNetworkHelper {
      
      - Returns: The system proxy settings as a dictionary.
      */
-    public func getProxySettingsAsDictionary() -> [String: Any] {
-        guard let proxySettingsAsDictionary: [String: Any] = self.getProxySettings() as? [String: Any] else {
-            fatalError("Failed to load CFNetworkCopySystemProxySettings as a Swift Dictionary.")
+    public func getProxySettingsAsDictionary() throws -> [String: Any] {
+        guard let proxySettingsAsDictionary: [String: Any] = try self.getProxySettings() as? [String: Any] else {
+            throw ProxyError.cfNetworkSettingsLoadFailure
         }
         return proxySettingsAsDictionary
     }
@@ -58,8 +72,8 @@ class CFNetworkHelper {
        - url: The URL used to determine proxy addresses.
      - Returns: The CFArray of proxies.
      */
-    public func getProxiesForURL(_ url: URL) -> CFArray {
-        let unmanagedProxies: Unmanaged<CFArray> = CFNetworkCopyProxiesForURL(url as CFURL, self.getProxySettings())
+    public func getProxiesForURL(_ url: URL) throws -> CFArray {
+        let unmanagedProxies: Unmanaged<CFArray> = CFNetworkCopyProxiesForURL(url as CFURL, try self.getProxySettings())
         return unmanagedProxies.takeRetainedValue()
     }
 
@@ -70,9 +84,9 @@ class CFNetworkHelper {
        - url: The URL used to determine proxy addresses.
      - Returns: The array of proxy dictionaries.
      */
-    public func getProxiesForURLAsArray(_ url: URL) -> [[String: Any]] {
-        guard let proxiesForURLAsArray = self.getProxiesForURL(url) as? [[String: Any]] else {
-            fatalError("Failed to load CFNetworkCopyProxiesForURL as a Swift Array.")
+    public func getProxiesForURLAsArray(_ url: URL) throws -> [[String: Any]] {
+        guard let proxiesForURLAsArray = try self.getProxiesForURL(url) as? [[String: Any]] else {
+            throw ProxyError.cfNetworkProxiesForURLFailure
         }
         return proxiesForURLAsArray
     }
