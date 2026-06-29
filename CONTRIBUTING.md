@@ -55,8 +55,9 @@ CLANG_MODULE_CACHE_PATH=.build/ModuleCache SWIFT_MODULE_CACHE_PATH=.build/Module
 
 ### Testing guidelines
 
+* **Unit Tests**: Focus on pure logic (e.g., parsing CFNetwork dictionaries and formatting environment variables inside `ProxyHelperCore`). Use `MockCFNetworkHelper` to mock OS-dependent CFNetwork API behaviors. Do not test the mock itself; test how the core logic handles various dictionary states (e.g., missing hosts, IPv6, multiple PAC results).
+* **Integration Tests**: Tests launch the built executable via `Process`. Ensure the binary name in the test checks points to the lowercase `"proxy_helper"`. Use these to test CLI argument parsing and `stdout` formatting. Avoid writing integration tests that depend on the host machine's live macOS proxy state, as they are brittle and flaky.
 * **Automatic Discovery**: For macOS XCTest suite execution, all test case methods inside `ProxyHelperTests` **must** be prefixed with `test` (e.g., `testQuitsCorrectly`), otherwise they will be ignored by the test runner.
-* **Integration Tests**: Tests launch the built executable via `Process`. Ensure the binary name in the test checks points to the lowercase `"proxy_helper"`.
 
 ## Code style & linting
 

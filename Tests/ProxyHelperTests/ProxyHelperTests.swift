@@ -16,6 +16,10 @@ final class ProxyHelperTests: XCTestCase {
         ("testNoProxyDomainsWithIPv6AndCIDR", testNoProxyDomainsWithIPv6AndCIDR),
         ("testShellOptionFish", testShellOptionFish),
         ("testShellOptionPowerShell", testShellOptionPowerShell),
+        ("testHTTPProxyURLParsing", testHTTPProxyURLParsing),
+        ("testInvalidProxyDictionary", testInvalidProxyDictionary),
+        ("testPACProxyParsing", testPACProxyParsing),
+        ("testAllProxyEnvironmentVariables", testAllProxyEnvironmentVariables),
     ]
 
     func testQuitsCorrectly() throws {
@@ -238,12 +242,86 @@ final class ProxyHelperTests: XCTestCase {
         XCTAssertTrue(domains.contains("fe80::2"))
         XCTAssertTrue(domains.contains("fe80::/64"))
     }
+
+    func testHTTPProxyURLParsing() throws {
+        let mockCFNetworkHelper = MockCFNetworkHelper()
+        mockCFNetworkHelper.mockProxySettings = [
+            kCFNetworkProxiesHTTPEnable as String: 1,
+            kCFNetworkProxiesHTTPProxy as String: "proxy.example.com",
+            kCFNetworkProxiesHTTPPort as String: 8080,
+        ]
+        let core = ProxyHelperCore(cfNetworkHelper: mockCFNetworkHelper)
+        let proxyURL = try core.getHTTPProxyURL()
+        XCTAssertEqual(proxyURL, "http://proxy.example.com:8080")
+    }
+
+    func testInvalidProxyDictionary() throws {
+        let mockCFNetworkHelper = MockCFNetworkHelper()
+        // Missing Port
+        mockCFNetworkHelper.mockProxySettings = [
+            kCFNetworkProxiesHTTPEnable as String: 1,
+            kCFNetworkProxiesHTTPProxy as String: "proxy.example.com",
+        ]
+        let core = ProxyHelperCore(cfNetworkHelper: mockCFNetworkHelper)
+        let proxyURL = try core.getHTTPProxyURL()
+        XCTAssertNil(proxyURL)
+    }
+
+    func testPACProxyParsing() throws {
+        let mockCFNetworkHelper = MockCFNetworkHelper()
+        // Enable PAC
+        mockCFNetworkHelper.mockProxySettings = [
+            kCFNetworkProxiesProxyAutoConfigEnable as String: 1,
+            kCFNetworkProxiesProxyAutoConfigURLString as String: "http://pac.example.com/proxy.pac",
+        ]
+        // Mock PAC execution result
+        mockCFNetworkHelper.mockPACProxies = [
+            [
+                kCFProxyTypeKey as String: kCFProxyTypeHTTP,
+                kCFProxyHostNameKey as String: "pac-proxy.example.com",
+                kCFProxyPortNumberKey as String: 3128,
+            ],
+        ]
+        let core = ProxyHelperCore(cfNetworkHelper: mockCFNetworkHelper)
+        let targetURL = URL(string: "https://www.apple.com")!
+        let envVars = try core.getPACProxyEnvironmentVariables(targetURL: targetURL)
+
+        XCTAssertEqual(envVars["http_proxy"], "http://pac-proxy.example.com:3128")
+        XCTAssertEqual(envVars["https_proxy"], "http://pac-proxy.example.com:3128")
+    }
+
+    func testAllProxyEnvironmentVariables() throws {
+        let mockCFNetworkHelper = MockCFNetworkHelper()
+        mockCFNetworkHelper.mockProxySettings = [
+            kCFNetworkProxiesHTTPEnable as String: 1,
+            kCFNetworkProxiesHTTPProxy as String: "http.example.com",
+            kCFNetworkProxiesHTTPPort as String: 80,
+            kCFNetworkProxiesHTTPSEnable as String: 1,
+            kCFNetworkProxiesHTTPSProxy as String: "https.example.com",
+            kCFNetworkProxiesHTTPSPort as String: 443,
+        ]
+        let core = ProxyHelperCore(cfNetworkHelper: mockCFNetworkHelper)
+        let envVars = try core.getAllProxyEnvironmentVariables()
+
+        XCTAssertEqual(envVars["http_proxy"], "http://http.example.com:80")
+        XCTAssertEqual(envVars["https_proxy"], "http://https.example.com:443")
+    }
 }
 
 class MockCFNetworkHelper: CFNetworkHelper {
     var mockProxySettings: [String: Any] = [:]
+    var mockProxiesForURL: [[String: Any]] = []
+    var mockPACProxies: [[String: Any]]?
 
     override func getProxySettingsAsDictionary() throws -> [String: Any] {
         return self.mockProxySettings
+    }
+
+    override func getProxiesForURLAsArray(_ url: URL) throws -> [[String: Any]] {
+        return self.mockProxiesForURL
+    }
+
+    override func executePAC(pacURL: URL, targetURL: URL, timeout: TimeInterval = 0.2) -> [[String: Any]]? {
+        return self.mockPACProxies
     }
 }
