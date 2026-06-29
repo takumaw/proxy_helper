@@ -54,7 +54,7 @@ To trigger a release (e.g., `v0.1.0`), push a signed Git tag representing the ve
 ```bash
 # 1. Update HISTORY.md, README.md, etc., commit changes
 git add HISTORY.md README.md
-git commit -m "Prepare v0.1.0 release"
+git commit -m "release: v0.1.0"
 
 # 2. Create a signed tag
 git tag -s v0.1.0 -m "Release v0.1.0"
